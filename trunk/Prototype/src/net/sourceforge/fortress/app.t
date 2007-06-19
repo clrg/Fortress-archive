@@ -17,10 +17,10 @@
         
         vexi.ui.frame = thisbox;
         
-        $map.activeTile ++= function(v)
+        $map.active ++= function(v)
         {
-            $position.text = "( "+v.posx+", "+v.posy+" )";
-            $tiletype.text = v.type;
+            $position.text = "( "+$map.activeTile.posx+", "+$map.activeTile.posy+" )";
+            $tiletype.text = $map.activeTile.type;
             cascade = v;
         }
         

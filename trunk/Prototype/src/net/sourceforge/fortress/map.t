@@ -25,6 +25,8 @@
         
         //////// map movement /////////////////////////////////////////
         
+        var dragging = false;
+        
         var mx;
         var my;
         var ox;
@@ -35,8 +37,8 @@
         var dragMove = function(v)
         {
             var m = thisbox.mouse;
-            var nx = ox - m.x + mx;
-            var ny = oy - m.y + my;
+            var nx = ox + m.x - mx;
+            var ny = oy + m.y - my;
             nx = 0 > nx ? (nx > vx ? nx : vx) : 0;
             ny = 0 > ny ? (ny > vy ? ny : vy) : 0;
             $map.x = nx;
@@ -49,11 +51,15 @@
         {
             surface.delMoveTrap(dragMove);
             surface.Release2 --= dragStop;
+            dragging = false;
             cascade = v;
+            active = true;
         }
         
         var dragStart = function(v)
         {
+            dragging = true;
+            $cur.display = false;
             var m = thisbox.mouse;
             mx = m.x;
             my = m.y;
@@ -72,21 +78,21 @@
         
         thisbox.activeTile = null;
         
-        var active = function()
+        thisbox.active ++= function(v)
         {
-            var d = thisbox.distanceto(activeTile);
+            var d = $map.distanceto(activeTile);
             $cur.display = true;
             $cur.width = activeTile.width;
             $cur.height = activeTile.height;
-            $cur.x = d.x;
-            $cur.y = d.y;
+            $cur.x = d.x + $map.x;
+            $cur.y = d.y + $map.y;
         }
         
         var enterFunc = function(v)
         {
-            activeTile = trapee;
             cascade = v;
-            active();
+            activeTile = trapee;
+            if (!dragging) active = true;
         }
         
         thisbox.Leave ++= function(v) { $cur.display = false; }
