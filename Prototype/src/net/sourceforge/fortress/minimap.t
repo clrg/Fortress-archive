@@ -24,8 +24,8 @@
         
         var syncView = function()
         {
-            $viewbox.width = $minimap.width * (vw / mw);
-            $viewbox.height = $minimap.height * (vh / mh);
+            $viewbox.width = $minimap.width * (vw / mw) + 1;
+            $viewbox.height = $minimap.height * (vh / mh) + 1;
             $viewbox.x = $minimap.width * (-mx / mw);
             $viewbox.y = $minimap.height * (-my / mh);
         }
