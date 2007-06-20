@@ -5,6 +5,61 @@
         <ui:box id="map" align="topleft" cols="1" packed="false" shrink="true" />
         <ui:box id="cur" align="topleft" fill="#88ffffff" display="false" packed="false" />
         
+        //////// sample road creation /////////////////////////////////
+        
+        thisbox.Press1 ++= function(v)
+        {
+            if (!activeTile) return;
+            createMudTile(activeTile);
+        }
+            
+        thisbox.createMudTile = function(tile)
+        {
+            if (tile.type == "mud") return;
+            var posx = tile.posx;
+            var posy = tile.posy;
+            var comp = "";
+            if (posy > 0 and $map[posy-1][posx].type == "mud")
+            {
+                var nt = $map[posy-1][posx];
+                nt.comp = nt.comp.substring(0, 2) + "m" + nt.comp.substring(3);
+                nt.sync();
+                comp = comp + "m";
+            }
+            else comp = comp + "_";
+            if ($map[posy].numchildren > posx + 1 and $map[posy][posx+1].type == "mud")
+            {
+                var nt = $map[posy][posx+1];
+                nt.comp = nt.comp.substring(0, 3) + "m";
+                nt.sync();
+                comp = comp + "m";
+            }
+            else comp = comp + "_";
+            if ($map.numchildren > posy + 1 and $map[posy+1][posx].type != "grass")
+            {
+                var nt = $map[posy+1][posx];
+                nt.comp = "m" + nt.comp.substring(1);
+                nt.sync();
+                comp = comp + "m";
+            }
+            else comp = comp + "_";
+            if (posx > 0 and $map[posy][posx-1].type != "grass")
+            {
+                var nt = $map[posy][posx-1];
+                nt.comp = nt.comp.substring(0, 1) + "m" + nt.comp.substring(2);
+                nt.sync();
+                comp = comp + "m";
+            }
+            else comp = comp + "_";
+            tile.seed = "";
+            tile.type = "mud";
+            tile.comp = comp;
+            tile.sync();
+            surface.setMapTile(tile);
+        }
+        
+        //////// minimap interaction //////////////////////////////////
+        
         var mapDim = function(v)
         {
             cascade = v;

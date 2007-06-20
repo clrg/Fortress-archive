@@ -7,16 +7,16 @@
         {
             switch (s)
             {
-               case 0: return "90";
-               case 1: return "98";
-               case 2: return "A0";
-               case 3: return "A8";
-               case 4: return "B0";
-               case 5: return "B8";
-               case 6: return "C0";
-               case 7: return "C8";
-               case 8: return "D0";
-               case 9: return "D8";
+               case 0: return "70";
+               case 1: return "78";
+               case 2: return "80";
+               case 3: return "88";
+               case 4: return "90";
+               case 5: return "98";
+               case 6: return "A0";
+               case 7: return "A8";
+               case 8: return "B0";
+               case 9: return "B8";
             }
             return "FF";
         }
@@ -25,6 +25,9 @@
         {
             switch (t)
             {
+                case "mud":
+                    fill = "#5f2a07";
+                    break;
                 case "grass":
                 default:
                     fill = "#00" + getFillHex(s) + "00";

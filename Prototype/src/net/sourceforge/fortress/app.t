@@ -2,7 +2,7 @@
 
 <vexi xmlns:ui="vexi://ui" xmlns="net.sourceforge.fortress" xmlns:role="org.vexi.lib.role">
     <role:surface />
-    <ui:box>
+    <ui:box titlebar="Fortress Prototype">
         <ui:box cols="1" hshrink="true">
             <minimap />
             <ui:box fill="#888888" height="1" />
