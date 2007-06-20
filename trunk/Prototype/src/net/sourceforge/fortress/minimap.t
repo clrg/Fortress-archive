@@ -70,6 +70,11 @@
                     }
                 }
             }
+            
+            surface.setMapTile = function(t)
+            {
+                $minimap[t.posy][t.posx].setType(t.type, t.seed);
+            }
         }
         
     </ui:box>
