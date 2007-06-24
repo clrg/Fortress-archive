@@ -1,17 +1,19 @@
 <!-- Copyright 2007 licensed under GPL v3 -->
 
 <vexi xmlns:ui="vexi://ui" xmlns="net.sourceforge.fortress">
-    <ui:box height="100" width="100">
-        <ui:box shrink="true">
-            <ui:box id="minimap" cols="1" shrink="true" />
-            <ui:box id="viewbox" cols="1" align="topleft" packed="false">
-                <ui:box fill="white" height="1" />
+    <ui:box height="100" width="100" layout="absolute">
+        <ui:box layout="absolute">
+            $minimap.width ++= function(v) { cascade = v; width = v; }
+            $minimap.height ++= function(v) { cascade = v; height = v; }
+            <ui:box id="minimap" shrink="true" />
+            <ui:box id="viewbox" orient="vertical" align="topleft">
+                <ui:box fill="white" height="1" vshrink="true" />
                 <ui:box>
-                    <ui:box fill="white" width="1" />
+                    <ui:box fill="white" width="1" hshrink="true" />
                     <ui:box />
-                    <ui:box fill="white" width="1" />
+                    <ui:box fill="white" width="1" hshrink="true" />
                 </ui:box>
-                <ui:box fill="white" height="1" />
+                <ui:box fill="white" height="1" vshrink="true" />
             </ui:box>
         </ui:box>
         
@@ -62,6 +64,7 @@
                 for (var i=0; ni > i; i++)
                 {
                     $minimap[i] = vexi.box;
+                    $minimap[i].orient = "vertical";
                     for (var j=0; nj > j; j++)
                     {
                         var t = .minimaptile(vexi.box);
@@ -73,7 +76,7 @@
             
             surface.setMapTile = function(t)
             {
-                $minimap[t.posy][t.posx].setType(t.type, t.seed);
+                $minimap[t.posx][t.posy].setType(t.type, t.seed);
             }
         }
         
