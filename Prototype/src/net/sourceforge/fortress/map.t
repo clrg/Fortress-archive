@@ -1,9 +1,9 @@
 <!-- Copyright 2007 licensed under GPL v3 -->
 
 <vexi xmlns:ui="vexi://ui" xmlns="net.sourceforge.fortress">
-    <ui:box>
-        <ui:box id="map" align="topleft" cols="1" packed="false" shrink="true" />
-        <ui:box id="cur" align="topleft" fill="#88ffffff" display="false" packed="false" />
+    <ui:box layout="absolute">
+        <ui:box id="map" shrink="true" />
+        <ui:box id="cur" fill="#88ffffff" display="false" />
         
         //////// sample road creation /////////////////////////////////
         
@@ -19,33 +19,33 @@
             var posx = tile.posx;
             var posy = tile.posy;
             var comp = "";
-            if (posy > 0 and $map[posy-1][posx].type == "mud")
+            if (posy > 0 and $map[posx][posy-1].type == "mud")
             {
-                var nt = $map[posy-1][posx];
+                var nt = $map[posx][posy-1];
                 nt.comp = nt.comp.substring(0, 2) + "m" + nt.comp.substring(3);
                 nt.sync();
                 comp = comp + "m";
             }
             else comp = comp + "_";
-            if ($map[posy].numchildren > posx + 1 and $map[posy][posx+1].type == "mud")
+            if ($map.numchildren > posx+1 and $map[posx+1][posy].type == "mud")
             {
-                var nt = $map[posy][posx+1];
+                var nt = $map[posx+1][posy];
                 nt.comp = nt.comp.substring(0, 3) + "m";
                 nt.sync();
                 comp = comp + "m";
             }
             else comp = comp + "_";
-            if ($map.numchildren > posy + 1 and $map[posy+1][posx].type != "grass")
+            if ($map[posx].numchildren > posy+1 and $map[posx][posy+1].type != "grass")
             {
-                var nt = $map[posy+1][posx];
+                var nt = $map[posx][posy+1];
                 nt.comp = "m" + nt.comp.substring(1);
                 nt.sync();
                 comp = comp + "m";
             }
             else comp = comp + "_";
-            if (posx > 0 and $map[posy][posx-1].type != "grass")
+            if (posx > 0 and $map[posx-1][posy].type != "grass")
             {
-                var nt = $map[posy][posx-1];
+                var nt = $map[posx-1][posy];
                 nt.comp = nt.comp.substring(0, 1) + "m" + nt.comp.substring(2);
                 nt.sync();
                 comp = comp + "m";
@@ -105,7 +105,7 @@
         var dragStop = function(v)
         {
             surface.delMoveTrap(dragMove);
-            surface.Release2 --= dragStop;
+            surface._Release2 --= dragStop;
             dragging = false;
             cascade = v;
             active = true;
@@ -123,7 +123,7 @@
             vx = width - $map.width;
             vy = height - $map.height;
             surface.addMoveTrap(dragMove);
-            surface.Release2 ++= dragStop;
+            surface._Release2 ++= dragStop;
             cascade = v;
         }
         
@@ -152,15 +152,16 @@
         
         thisbox.Leave ++= function(v) { $cur.display = false; }
         
-        for (var i=0; 50>i; i++)
+        for (var i=0; 100>i; i++)
         {
             $map[i] = vexi.box;
-            for (var j=0; 50>j; j++)
+            $map[i].orient = "vertical";
+            for (var j=0; 100>j; j++)
             {
                 var t = .maptile(vexi.box);
                 t.Enter ++= enterFunc;
-                t.posx = j;
-                t.posy = i;
+                t.posx = i;
+                t.posy = j;
                 $map[i][j] = t;
             }
         }
