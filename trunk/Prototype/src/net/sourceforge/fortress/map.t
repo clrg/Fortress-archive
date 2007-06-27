@@ -59,7 +59,7 @@
         {
             drag1 = false;
             surface.Focused --= sr1Func;
-            surface.Release1 --= sr1Func;
+            surface._Release1 --= sr1Func;
         }
         
         thisbox.Press1 ++= function(v)
@@ -68,7 +68,7 @@
             createMudTile(activeTile);
             drag1 = true;
             surface.Focused ++= sr1Func;
-            surface.Release1 ++= sr1Func;
+            surface._Release1 ++= sr1Func;
         }
         
         //////// minimap interaction //////////////////////////////////

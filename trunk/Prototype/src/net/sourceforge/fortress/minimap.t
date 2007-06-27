@@ -43,12 +43,14 @@
         var releaseFunc = function(v)
         {
             Move --= moveMapFunc;
+            surface.Focused --= releaseFunc;
             surface._Release1 --= releaseFunc;
         }
         
         var pressFunc = function(v)
         {
             Move ++= moveMapFunc;
+            surface.Focused ++= releaseFunc;
             surface._Release1 ++= releaseFunc;
         }
         
