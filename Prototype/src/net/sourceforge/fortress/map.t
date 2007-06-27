@@ -183,6 +183,16 @@
         {
             cascade = v;
             surface.setMapContents($map);
+            
+            surface.moveMapTo = function(x, y)
+            {
+                var d = $map.distanceto($map[x][y]);
+                var dx = width/2 - d.x;
+                var dy = height/2 - d.y;
+                $map.x = 0 > dx ? (dx > width - $map.width ? dx : width - $map.width) : 0;
+                $map.y = 0 > dy ? (dy > height - $map.height ? dy : height - $map.height) : 0;
+                surface.setMapPos($map.x, $map.y);
+            }
         }
         
     </ui:box>
