@@ -34,10 +34,25 @@
         
         var moveMapFunc = function(v)
         {
+            vexi.log.info(v);
             // assumes minimap tiles are 1px by 1px
-            var d = $minimap.distanceto(trapee);
-            surface.moveMapTo(d.x, d.y);
+            surface.moveMapTo(mouse.x, mouse.y);
+            cascade = v;
         }
+        
+        var releaseFunc = function(v)
+        {
+            Move --= moveMapFunc;
+            surface._Release1 --= releaseFunc;
+        }
+        
+        var pressFunc = function(v)
+        {
+            Move ++= moveMapFunc;
+            surface._Release1 ++= releaseFunc;
+        }
+        
+        thisbox.Press1 ++= pressFunc;
         
         surface ++= function(v)
         {
