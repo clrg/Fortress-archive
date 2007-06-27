@@ -5,15 +5,12 @@
         <ui:box id="map" shrink="true" />
         <ui:box id="cur" fill="#88ffffff" display="false" />
         
+        var drag1 = false;
+        var drag2 = false;
+        
         //////// sample road creation /////////////////////////////////
         
-        thisbox.Press1 ++= function(v)
-        {
-            if (!activeTile) return;
-            createMudTile(activeTile);
-        }
-            
-        thisbox.createMudTile = function(tile)
+        var createMudTile = function(tile)
         {
             if (tile.type == "mud") return;
             var posx = tile.posx;
@@ -58,6 +55,22 @@
             surface.setMapTile(tile);
         }
         
+        var sr1Func = function(v)
+        {
+            drag1 = false;
+            surface.Focused --= sr1Func;
+            surface.Release1 --= sr1Func;
+        }
+        
+        thisbox.Press1 ++= function(v)
+        {
+            if (!activeTile or drag2) return;
+            createMudTile(activeTile);
+            drag1 = true;
+            surface.Focused ++= sr1Func;
+            surface.Release1 ++= sr1Func;
+        }
+        
         //////// minimap interaction //////////////////////////////////
         
         var mapDim = function(v)
@@ -79,8 +92,6 @@
         thisbox.height ++= mapBox;
         
         //////// map movement /////////////////////////////////////////
-        
-        var dragging = false;
         
         var mx;
         var my;
@@ -106,14 +117,15 @@
         {
             surface.delMoveTrap(dragMove);
             surface._Release2 --= dragStop;
-            dragging = false;
+            drag2 = false;
             cascade = v;
             active = true;
         }
         
         var dragStart = function(v)
         {
-            dragging = true;
+            if (drag1) return;
+            drag2 = true;
             $cur.display = false;
             var m = thisbox.mouse;
             mx = m.x;
@@ -135,19 +147,20 @@
         
         thisbox.active ++= function(v)
         {
-            var d = $map.distanceto(activeTile);
+            var d = distanceto(activeTile);
             $cur.display = true;
             $cur.width = activeTile.width;
             $cur.height = activeTile.height;
-            $cur.x = d.x + $map.x;
-            $cur.y = d.y + $map.y;
+            $cur.x = d.x;
+            $cur.y = d.y;
         }
         
         var enterFunc = function(v)
         {
             cascade = v;
             activeTile = trapee;
-            if (!dragging) active = true;
+            if (drag1) createMudTile(trapee);
+            if (!drag2) active = true;
         }
         
         thisbox.Leave ++= function(v) { $cur.display = false; }
