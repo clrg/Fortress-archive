@@ -147,7 +147,7 @@
         
         thisbox.active ++= function(v)
         {
-            var d = distanceto(activeTile);
+            var d = thisbox.distanceto(activeTile);
             $cur.display = true;
             $cur.width = activeTile.width;
             $cur.height = activeTile.height;
