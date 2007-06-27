@@ -32,6 +32,13 @@
             $viewbox.y = $minimap.height * (-my / mh);
         }
         
+        var moveMapFunc = function(v)
+        {
+            // assumes minimap tiles are 1px by 1px
+            var d = $minimap.distanceto(trapee);
+            surface.moveMapTo(d.x, d.y);
+        }
+        
         surface ++= function(v)
         {
             cascade = v;
@@ -68,6 +75,7 @@
                     for (var j=0; nj > j; j++)
                     {
                         var t = .minimaptile(vexi.box);
+                        t.Press1 ++= moveMapFunc;
                         t.setType(map[i][j].type, map[i][j].seed);
                         $minimap[i][j] = t;
                     }

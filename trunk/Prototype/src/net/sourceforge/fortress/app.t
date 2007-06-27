@@ -8,9 +8,9 @@
             <minimap />
             <ui:box fill="#888888" height="1" />
             <ui:box height="5" />
-            <ui:box id="tiletype" textcolor="white" />
+            <ui:box id="tiletype" align="center" textcolor="white" />
             <ui:box height="5" />
-            <ui:box id="position" textcolor="white" />
+            <ui:box id="position" align="center" textcolor="white" />
         </ui:box>
         <ui:box fill="#888888" width="1" hshrink="true" />
         <map id="map" />
