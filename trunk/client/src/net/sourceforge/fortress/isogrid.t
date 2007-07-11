@@ -18,23 +18,27 @@
         
         //// GRID HANDLING ////////////////////////////////////////////
         
+        /* the set piece property forward already signals what part of
+         * the grid image we want to display so we just use 'true' for
+         * specifying left/right */
+        
         var hideGrid = function()
         {
             for (var i=0; 100>i; i++)
                 for (var j=0; 100>j; j++)
-                    $map[i][j].delPiece("grid", true);
+                    $map[i][j].delPiece("grid", $map[i][j].forward, true);
         }
         
         var showGrid = function()
         {
             for (var i=0; 100>i; i++)
                 for (var j=0; 100>j; j++)
-                    $map[i][j].addPiece("grid", true);
+                    $map[i][j].addPiece("grid", $map[i][j].forward, true);
         }
         
         var gridon = false;
         
-        // temporarily assignment of Press1 to grid toggling
+        // temporary assignment of Press1 to grid toggling
         thisbox.Press1 ++= function(v)
         {
             cascade = v;
@@ -92,15 +96,42 @@
         
         //// MAP CREATION /////////////////////////////////////////////
         
-        var activePiece = null;
+        var hx, hy;
         
-        var enterFunc = function(v)
+        var highlight = function(tx, ty)
+        {
+            if (hx != null and hy != null)
+            {
+                $map[hx][hy].delPiece("highlight", true, true);
+                $map[hx+1][hy].delPiece("highlight", true, false);
+                $map[hx][hy+1].delPiece("highlight", false, true);
+                $map[hx+1][hy+1].delPiece("highlight", false, false);
+                hx = null;
+                hy = null;
+            }
+            
+            // FIXME: replace hardcoded upper limits
+            if (0 > tx or 0 > ty or tx + 1 > 99 or ty + 1 > 99) return;
+            
+            hx = tx;
+            hy = ty;
+            $map[hx][hy].addPiece("highlight", true, true);
+            $map[hx+1][hy].addPiece("highlight", true, false);
+            $map[hx][hy+1].addPiece("highlight", false, true);
+            $map[hx+1][hy+1].addPiece("highlight", false, false);
+        }
+        
+        var moveFunc = function(v)
         {
             cascade = v;
-            activePiece = trapee;
             if (!drag2)
             {
-                var top = trapee.mouse.x > trapee.mouse.y * 2;
+                var m = trapee.mouse;
+                // work out which isometric tile we are closest to
+                var f = trapee.forward;
+                var d = (f ? (24 - m.y) : m.y) * 2 > m.x;
+                highlight(trapee.posx - (d ? 1 : 0),
+                          trapee.posy - (f ? (d ? 1 : 0) : (d ? 0 : 1)));
             }
         }
         
@@ -111,7 +142,8 @@
             for (var j=0; 100>j; j++)
             {
                 var t = .twoquarter(vexi.box);
-                t.Enter ++= enterFunc;
+                t.Move ++= moveFunc;
+                t.forward = (i+j)%2 == 0;
                 t.posx = i;
                 t.posy = j;
                 t.fill = "#009900"; // temporary
