@@ -9,49 +9,53 @@
             the map (hence the name).  The two quarters are either side
             of a diagonal axis of the template box.
             
-            There are two types of tile - top and bottom.  This means
-            whether the tile to the right is a top piece or on the
-            bottom of an isometric tile.
+            There are two types of tile - the diagonal starts either
+            topleft or bottomleft - we use the back/forward slash
+            analogy as representation.
         </usage>
     </meta:doc>
     
     <ui:box layout="absolute" shrink="true" width="48" height="24">
         
         // top-left vs bottom-left
-        thisbox.top = true;
+        thisbox.forward;
         // used to give the graphics a non-repeating feel
         thisbox.seed = vexi.math.floor(vexi.math.random()*10);
         
-        thisbox.addPiece = function(type, left)
+        thisbox.addPiece = function(type, top, left)
         {
             var z = static.zindex[type];
             if (z == null) throw "tried to add nonregistered type '"+type+"' from "+posx+", "+posy;
             var i = 0;
+            var p;
             while (numchildren > i)
             {
-                if (thisbox[i].type == type and thisbox[i].left == left)
+                p = thisbox[i];
+                if (p.type == type and p.left == left and p.top == top)
                     throw "tried to add a duplicate tile piece of type '"+type+"' from "+posx+", "+posy;
-                if (thisbox[i].z > z) break;
+                if (p.z > z) break;
                 i++;
             }
             
             var b = vexi.box;
             b.fill = .image[static.tileset][type];
             b.left = left;
+            b.top = top;
             b.shrink = true;
             b.type = type;
             b.x = left ? 0 : -48;
             b.y = top ? 0 : -24;
-            //vexi.log.info(posx+", "+posy+" -- "+top+", "+left);
             b.z = z;
             thisbox[i] = b;
         }
         
-        thisbox.delPiece = function(type, left)
+        thisbox.delPiece = function(type, top, left)
         {
+            var p;
             for (var i=0; numchildren>i; i++)
             {
-                if (thisbox[i].type == type and thisbox[i].left == left)
+                p = thisbox[i];
+                if (p.type == type and p.left == left and p.top == top)
                 {
                     thisbox[i] = null;
                     return;
