@@ -140,6 +140,14 @@
             cascade = v;
             if (gridon) showGrid(); else hideGrid();
         }
+
+				var invert = true;
+				/** invmouse property to invert mouse movement */
+				thisbox.invmouse ++= function(v)
+				{
+						cascade = v;
+						invert = invmouse;
+				}
         
         //// MAP DRAGGING /////////////////////////////////////////////
         
@@ -155,8 +163,19 @@
         var drag2Func = function(v)
         {
             var m = surface.mouse;
-            var nx = ox + m.x - mx;
-            var ny = oy + m.y - my;
+						var nx;
+						var ny;
+						if(!invert) {
+							//new_x = map_origin_x + current_mouse_x - mouse_origin_x;
+            	nx = ox + m.x - mx;
+							//new_y = map_origin_y + current_mouse_y - mouse_origin_y;
+            	ny = oy + m.y - my;
+						} else {
+							//new_x = map_origin_x + mouse_origin_x - current_mouse_x;
+            	nx = ox + mx - m.x;
+							//new_y = map_origin_y + mouse_origin_y - current_mouse_y;
+            	ny = oy + my - m.y;
+						}
             nx = 0 > nx ? (nx > vx ? nx : vx) : 0;
             ny = 0 > ny ? (ny > vy ? ny : vy) : 0;
             $map.x = nx;
@@ -179,8 +198,10 @@
             drag2 = true;
             Move --= moveFunc;
             var s = surface;
+						//mouse origin
             mx = s.mouse.x;
             my = s.mouse.y;
+						//map origin
             ox = $map.x;
             oy = $map.y;
             vx = width - $map.width;
