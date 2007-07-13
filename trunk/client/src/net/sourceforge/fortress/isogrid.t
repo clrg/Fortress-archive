@@ -84,6 +84,8 @@
                 t.posx = i;
                 t.posy = j;
                 $map[i][j] = t;
+                $map[i][j].grid = 
+                    $map[i][j].addPiece("grid", $map[i][j].forward, true);
             }
         }
         
@@ -97,14 +99,14 @@
         {
             for (var i=0; 100>i; i++)
                 for (var j=0; 100>j; j++)
-                    $map[i][j].delPiece("grid", $map[i][j].forward, true);
+                    $map[i][j].grid.display = false;
         }
         
         var showGrid = function()
         {
             for (var i=0; 100>i; i++)
                 for (var j=0; 100>j; j++)
-                    $map[i][j].addPiece("grid", $map[i][j].forward, true);
+                    $map[i][j].grid.display = true ;
         }
         
         var gridon = false;
