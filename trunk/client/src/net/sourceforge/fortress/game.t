@@ -11,14 +11,17 @@
             <shadowtext text="Map Size 100 x 100" shrink="true" />
         </panel>
         <ui:box>
-            <panel id="left" hshrink="true">
-                <ui:box width="10" />
+            <panel id="left" hshrink="true" orient="vertical" padding="0 10">
+                <layout:border border="#ffcc00" depth="1" shrink="true">
+                    <minimap id="minimap" />
+                </layout:border>
                 <ui:box orient="vertical" vshrink="true">
-                    <layout:border border="#ffcc00" depth="1" shrink="true">
-                        <minimap id="minimap" />
-                    </layout:border>
+                    <ui:box height="10" />
+                    <widget:check id="gridon" cursor="hand" focusable="false" selected="true">
+                        <shadowtext text="Toggle Grid" />
+                    </widget:check>
                 </ui:box>
-                <ui:box width="10" />
+                <ui:box />
             </panel>
             <layout:border border="#ffcc00" depth="1">
                 <isogrid id="map" />
@@ -28,6 +31,12 @@
         <panel id="bottom" vshrink="true" padding="5" />
         
         vexi.ui.frame = thisbox;
+        
+        //// Map / Sidebar Interaction ////////////////////////////////
+        
+        $gridon.selected ++= function(v) { cascade = v; $map.gridon = v; }
+        
+        //// Panel Layout /////////////////////////////////////////////
         
         $top.height ++= function(v)
         {
@@ -40,12 +49,14 @@
         {
             cascade = v;
             $bottom.bgy = -((v + $top.height)%256);
+            surface.setMapBox(vexi.math.floor($map.width / 48), vexi.math.floor(v / 24));
         }
         
         $map.width ++= function(v)
         {
             cascade = v;
             $right.bgx = -((v + $left.width)%256);
+            surface.setMapBox(vexi.math.floor(v / 48), vexi.math.floor($map.height / 24));
         }
         
     </ui:box>

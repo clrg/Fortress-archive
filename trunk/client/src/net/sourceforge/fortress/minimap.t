@@ -6,7 +6,7 @@
             $minimap.width ++= function(v) { cascade = v; width = v; }
             $minimap.height ++= function(v) { cascade = v; height = v; }
             <ui:box id="minimap" shrink="true" />
-            <ui:box id="viewbox" display="false" orient="vertical" align="topleft">
+            <ui:box id="viewbox" orient="vertical">
                 <ui:box fill="white" height="1" vshrink="true" />
                 <ui:box>
                     <ui:box fill="white" width="1" hshrink="true" />
@@ -34,7 +34,6 @@
         
         var moveMapFunc = function(v)
         {
-            vexi.log.info(v);
             // assumes minimap tiles are 1px by 1px
             surface.moveMapTo(mouse.x, mouse.y);
             cascade = v;
@@ -42,6 +41,7 @@
         
         var releaseFunc = function(v)
         {
+            cascade = v;
             Move --= moveMapFunc;
             surface.Focused --= releaseFunc;
             surface._Release1 --= releaseFunc;
@@ -49,6 +49,7 @@
         
         var pressFunc = function(v)
         {
+            cascade = v;
             Move ++= moveMapFunc;
             surface.Focused ++= releaseFunc;
             surface._Release1 ++= releaseFunc;

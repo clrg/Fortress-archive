@@ -7,16 +7,16 @@
         {
             switch (s)
             {
-               case 0: return "70";
-               case 1: return "78";
-               case 2: return "80";
-               case 3: return "88";
-               case 4: return "90";
-               case 5: return "98";
-               case 6: return "A0";
-               case 7: return "A8";
-               case 8: return "B0";
-               case 9: return "B8";
+               case 0: return "50";
+               case 1: return "58";
+               case 2: return "60";
+               case 3: return "68";
+               case 4: return "70";
+               case 5: return "78";
+               case 6: return "80";
+               case 7: return "88";
+               case 8: return "90";
+               case 9: return "98";
             }
             return "FF";
         }
