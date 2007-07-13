@@ -89,7 +89,7 @@
             }
         }
         
-        var setMapPos = function(v)
+        var callSetMapPos = function(v)
         {
             var tx = vexi.math.floor($map.x / 48);
             var ty = vexi.math.floor($map.y / 24);
@@ -99,8 +99,8 @@
         surface ++= function(v)
         {
             cascade = v;
-            setMapPos();
-            surface.setMapContents($map);
+            callSetMapPos();
+            surface.setMap($map);
             surface.setMapDim(100,100);
             
             surface.moveMapTo = function(x, y)
@@ -110,7 +110,7 @@
                 var dy = height/2 - d.y;
                 $map.x = 0 > dx ? (dx > width - $map.width ? dx : width - $map.width) : 0;
                 $map.y = 0 > dy ? (dy > height - $map.height ? dy : height - $map.height) : 0;
-                setMapPos();
+                callSetMapPos();
             }
         }
         
@@ -140,16 +140,11 @@
             cascade = v;
             if (gridon) showGrid(); else hideGrid();
         }
-
-				var invert = true;
-				/** invmouse property to invert mouse movement */
-				thisbox.invmouse ++= function(v)
-				{
-						cascade = v;
-						invert = invmouse;
-				}
         
         //// MAP DRAGGING /////////////////////////////////////////////
+        
+        // invert mouse movement on map dragging
+        thisbox.invert = false;
         
         var drag1 = false;
         var drag2 = false;
@@ -163,19 +158,22 @@
         var drag2Func = function(v)
         {
             var m = surface.mouse;
-						var nx;
-						var ny;
-						if(!invert) {
-							//new_x = map_origin_x + current_mouse_x - mouse_origin_x;
-            	nx = ox + m.x - mx;
-							//new_y = map_origin_y + current_mouse_y - mouse_origin_y;
-            	ny = oy + m.y - my;
-						} else {
-							//new_x = map_origin_x + mouse_origin_x - current_mouse_x;
-            	nx = ox + mx - m.x;
-							//new_y = map_origin_y + mouse_origin_y - current_mouse_y;
-            	ny = oy + my - m.y;
-						}
+            var nx;
+            var ny;
+            // new_x,y = map_origin_x,y + current_mouse_x,y - mouse_origin_x,y
+            if (!invert)
+            {
+                nx = ox + m.x - mx;
+                ny = oy + m.y - my;
+            }
+            // new_x,y = map_origin_x,y + mouse_origin_x,y - current_mouse_x,y
+            else
+            {
+                nx = ox + mx - m.x;
+                ny = oy + my - m.y;
+            }
+            // crop new_x,y to keep map display within screen bounds
+            // below is an optimized version of: max(0, min(nx, vy))
             nx = 0 > nx ? (nx > vx ? nx : vx) : 0;
             ny = 0 > ny ? (ny > vy ? ny : vy) : 0;
             $map.x = nx;
@@ -189,7 +187,7 @@
             Move ++= moveFunc;
             surface._Release2 --= callee;
             surface.delMoveTrap(drag2Func);
-            setMapPos();
+            callSetMapPos();
             cascade = v;
         }
         
@@ -198,12 +196,13 @@
             drag2 = true;
             Move --= moveFunc;
             var s = surface;
-						//mouse origin
+            // mouse origin
             mx = s.mouse.x;
             my = s.mouse.y;
-						//map origin
+            // map origin
             ox = $map.x;
             oy = $map.y;
+            // x,y limit
             vx = width - $map.width;
             vy = height - $map.height;
             s._Release2 ++= release2Func;
