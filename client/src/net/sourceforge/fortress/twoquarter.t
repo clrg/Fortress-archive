@@ -21,6 +21,11 @@
         thisbox.forward;
         // used to give the graphics a non-repeating feel
         thisbox.seed = vexi.math.floor(vexi.math.random()*10);
+        // used to set the base fill of the tile
+        thisbox.type = "grass";
+        
+        var sync = function() { fill = .image[type][type+seed]; }
+        sync();
         
         thisbox.addPiece = function(type, top, left)
         {
