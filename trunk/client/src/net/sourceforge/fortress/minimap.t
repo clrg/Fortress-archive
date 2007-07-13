@@ -17,32 +17,46 @@
             </ui:box>
         </ui:box>
         
-        var mw = 1;
-        var mh = 1;
-        var mx = 1;
-        var my = 1;
-        var vw = 1;
-        var vh = 1;
+        var map_w = 1;
+        var map_h = 1;
+        var map_x = 1;
+        var map_y = 1;
+        var view_w = 1;
+        var view_h = 1;
         
+        /** synchronizes the viewbox with the map */
         var syncView = function()
         {
-            $viewbox.width = $minimap.width * (vw / mw) + 1;
-            $viewbox.height = $minimap.height * (vh / mh) + 1;
-            $viewbox.x = $minimap.width * (-mx / mw);
-            $viewbox.y = $minimap.height * (-my / mh);
+            $viewbox.width = $minimap.width * (view_w / map_w) + 1;
+            $viewbox.height = $minimap.height * (view_h / map_h) + 1;
+            $viewbox.x = $minimap.width * (-map_x / map_w);
+            $viewbox.y = $minimap.height * (-map_y / map_h);
+        }
+        
+        var mx, my;
+        var ox, oy;
+        
+        var moveMap = function()
+        {
+            // assumes minimap tiles are 1px by 1px
+            var m = surface.mouse;
+            var nx = ox + m.x - mx;
+            var ny = oy + m.y - my;
+            nx = 0 > nx ? 0 : (nx > $minimap.width-1 ? $minimap.width-1 : nx);
+            ny = 0 > ny ? 0 : (ny > $minimap.height-1 ? $minimap.height-1 : ny);
+            surface.moveMapTo(nx, ny);
         }
         
         var moveMapFunc = function(v)
         {
-            // assumes minimap tiles are 1px by 1px
-            surface.moveMapTo(mouse.x, mouse.y);
             cascade = v;
+            moveMap();
         }
         
         var releaseFunc = function(v)
         {
             cascade = v;
-            Move --= moveMapFunc;
+            surface.delMoveTrap(moveMapFunc);
             surface.Focused --= releaseFunc;
             surface._Release1 --= releaseFunc;
         }
@@ -50,9 +64,15 @@
         var pressFunc = function(v)
         {
             cascade = v;
-            Move ++= moveMapFunc;
+            var m = surface.mouse;
+            mx = m.x;
+            my = m.y;
+            ox = mouse.x;
+            oy = mouse.y;
+            surface.addMoveTrap(moveMapFunc);
             surface.Focused ++= releaseFunc;
             surface._Release1 ++= releaseFunc;
+            moveMap();
         }
         
         thisbox.Press1 ++= pressFunc;
@@ -61,28 +81,28 @@
         {
             cascade = v;
             
-            surface.setMapBox = function(_vw, _vh)
+            surface.setMapView = function(vw, vh)
             {
-                vw = _vw;
-                vh = _vh;
+                view_w = vw;
+                view_h = vh;
                 syncView();
             }
             
-            surface.setMapDim = function(_mw, _mh)
+            surface.setMapDim = function(mw, mh)
             {
-                mw = _mw;
-                mh = _mh;
+                map_w = mw;
+                map_h = mh;
                 syncView();
             }
             
-            surface.setMapPos = function(_mx, _my)
+            surface.setMapPos = function(mx, my)
             {
-                mx = _mx;
-                my = _my;
+                map_x = mx;
+                map_y = my;
                 syncView();
             }
             
-            surface.setMapContents = function(map)
+            surface.setMap = function(map)
             {
                 var ni = map.numchildren;
                 var nj = map[0].numchildren;

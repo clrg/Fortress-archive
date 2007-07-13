@@ -21,7 +21,7 @@
                         <shadowtext text="Toggle Grid" />
                     </widget:check>
                     <ui:box height="10" />
-                    <widget:check id="invmouse" cursor="hand" focusable="false" selected="false">
+                    <widget:check id="invert" cursor="hand" focusable="false" selected="false">
                         <shadowtext text="Invert Mouse" />
                     </widget:check>
                 </ui:box>
@@ -39,7 +39,7 @@
         //// Map / Sidebar Interaction ////////////////////////////////
         
         $gridon.selected ++= function(v) { cascade = v; $map.gridon = v; }
-				$invmouse.selected ++= function(v) { cascade = v; $map.invmouse = v; }
+        $invert.selected ++= function(v) { cascade = v; $map.invert = v; }
         
         //// Panel Layout /////////////////////////////////////////////
         
@@ -54,14 +54,14 @@
         {
             cascade = v;
             $bottom.bgy = -((v + $top.height)%256);
-            surface.setMapBox(vexi.math.floor($map.width / 48), vexi.math.floor(v / 24));
+            surface.setMapView(vexi.math.floor($map.width / 48), vexi.math.floor(v / 24));
         }
         
         $map.width ++= function(v)
         {
             cascade = v;
             $right.bgx = -((v + $left.width)%256);
-            surface.setMapBox(vexi.math.floor(v / 48), vexi.math.floor($map.height / 24));
+            surface.setMapView(vexi.math.floor(v / 48), vexi.math.floor($map.height / 24));
         }
         
     </ui:box>
