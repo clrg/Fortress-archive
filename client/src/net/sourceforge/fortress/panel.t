@@ -1,4 +1,4 @@
-<!-- Copyright 2007 - GPL v3 -->
+<!-- Copyright 2007 licensed under GPL v3 -->
 
 <vexi xmlns:ui="vexi://ui" xmlns:meta="vexi://meta" xmlns="net.sourceforge.fortress"
     xmlns:layout="vexi.layout" xmlns:rdrt="vexi.util.redirect">

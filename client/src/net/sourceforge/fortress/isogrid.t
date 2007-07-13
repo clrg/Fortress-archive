@@ -89,11 +89,36 @@
             }
         }
         
+        var setMapPos = function(v)
+        {
+            var tx = vexi.math.floor($map.x / 48);
+            var ty = vexi.math.floor($map.y / 24);
+            surface.setMapPos(tx, ty);
+        }
+        
+        surface ++= function(v)
+        {
+            cascade = v;
+            setMapPos();
+            surface.setMapContents($map);
+            surface.setMapDim(100,100);
+            
+            surface.moveMapTo = function(x, y)
+            {
+                var d = $map.distanceto($map[x][y]);
+                var dx = width/2 - d.x;
+                var dy = height/2 - d.y;
+                $map.x = 0 > dx ? (dx > width - $map.width ? dx : width - $map.width) : 0;
+                $map.y = 0 > dy ? (dy > height - $map.height ? dy : height - $map.height) : 0;
+                setMapPos();
+            }
+        }
+        
         //// GRID HANDLING ////////////////////////////////////////////
         
-        /* the set piece property forward already signals what part of
-         * the grid image we want to display so we just use 'true' for
-         * specifying left/right */
+        /* grid is a special piece referenced to tile.grid during map
+         * creation - so displaying the grid is as a simple as putting
+         * to tile.grid.display */
         
         var hideGrid = function()
         {
@@ -109,13 +134,10 @@
                     $map[i][j].grid.display = true ;
         }
         
-        var gridon = false;
-        
-        // temporary assignment of Press1 to grid toggling
-        thisbox.Press1 ++= function(v)
+        /** gridon property used to control toggling of the map grid */
+        thisbox.gridon ++= function(v)
         {
             cascade = v;
-            gridon = !gridon;
             if (gridon) showGrid(); else hideGrid();
         }
         
@@ -148,6 +170,7 @@
             Move ++= moveFunc;
             surface._Release2 --= callee;
             surface.delMoveTrap(drag2Func);
+            setMapPos();
             cascade = v;
         }
         
