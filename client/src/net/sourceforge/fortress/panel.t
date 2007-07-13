@@ -1,5 +1,11 @@
-<vexi xmlns:ui="vexi://ui" xmlns="net.sourceforge.fortress"
+<!-- Copyright 2007 - GPL v3 -->
+
+<vexi xmlns:ui="vexi://ui" xmlns:meta="vexi://meta" xmlns="net.sourceforge.fortress"
     xmlns:layout="vexi.layout" xmlns:rdrt="vexi.util.redirect">
+    <meta:doc>
+       <author>Charles Goodwin</author>
+    </meta:doc>
+    
     <ui:box redirect="$content">
         <ui:box id="bg" fill=".image.stonebg" />
         <layout:pad id="pad">
@@ -15,8 +21,8 @@
         hshrink ++= function(v) { cascade = v; $pad.width ++= sizeFunc; }
         vshrink ++= function(v) { cascade = v; $pad.height ++= sizeFunc; }
         
-        thisbox.bgx = function(v) { $bg.x = v; return; }
-        thisbox.bgy = function(v) { $bg.y = v; return; }
+        thisbox.bgx ++= function(v) { $bg.x = v; return; }
+        thisbox.bgy ++= function(v) { $bg.y = v; return; }
         
     </ui:box>
 </vexi>
