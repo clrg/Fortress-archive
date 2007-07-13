@@ -52,6 +52,8 @@
             b.y = top ? 0 : -24;
             b.z = z;
             thisbox[i] = b;
+            // in case we have special meaning attached to the piece
+            return b;
         }
         
         thisbox.delPiece = function(type, top, left)
