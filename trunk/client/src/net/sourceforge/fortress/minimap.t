@@ -6,7 +6,7 @@
             $minimap.width ++= function(v) { cascade = v; width = v; }
             $minimap.height ++= function(v) { cascade = v; height = v; }
             <ui:box id="minimap" shrink="true" />
-            <ui:box id="viewbox" orient="vertical" align="topleft">
+            <ui:box id="viewbox" display="false" orient="vertical" align="topleft">
                 <ui:box fill="white" height="1" vshrink="true" />
                 <ui:box>
                     <ui:box fill="white" width="1" hshrink="true" />
