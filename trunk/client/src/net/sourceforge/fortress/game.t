@@ -20,6 +20,10 @@
                     <widget:check id="gridon" cursor="hand" focusable="false" selected="true">
                         <shadowtext text="Toggle Grid" />
                     </widget:check>
+                    <ui:box height="10" />
+                    <widget:check id="invmouse" cursor="hand" focusable="false" selected="false">
+                        <shadowtext text="Invert Mouse" />
+                    </widget:check>
                 </ui:box>
                 <ui:box />
             </panel>
@@ -35,6 +39,7 @@
         //// Map / Sidebar Interaction ////////////////////////////////
         
         $gridon.selected ++= function(v) { cascade = v; $map.gridon = v; }
+				$invmouse.selected ++= function(v) { cascade = v; $map.invmouse = v; }
         
         //// Panel Layout /////////////////////////////////////////////
         
