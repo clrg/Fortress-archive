@@ -207,6 +207,7 @@
             vy = height - $map.height;
             s._Release2 ++= release2Func;
             s.addMoveTrap(drag2Func);
+            highlight(-1, -1);
             cascade = v;
         }
         
