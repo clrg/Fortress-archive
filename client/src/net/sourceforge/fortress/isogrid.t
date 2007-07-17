@@ -16,7 +16,26 @@
     <ui:box layout="place">
         <ui:box id="map" shrink="true" />
         
-        //// MAP CREATION /////////////////////////////////////////////
+        
+        //// PIECE MANAGEMENT /////////////////////////////////////////
+        
+        var addPiece = function(piece, px, py)
+        {
+            if (!$map[px][py]) return;
+            $map[px][py].addPiece(piece, true, true);
+            $map[px+1][py].addPiece(piece, true, false);
+            $map[px][py+1].addPiece(piece, false, true);
+            $map[px+1][py+1].addPiece(piece, false, false);
+        }
+        
+        var delPiece = function(piece, px, py)
+        {
+            if (!$map[px][py]) return;
+            $map[px][py].delPiece(piece, true, true);
+            $map[px+1][py].delPiece(piece, true, false);
+            $map[px][py+1].delPiece(piece, false, true);
+            $map[px+1][py+1].delPiece(piece, false, false);
+        }
         
         var activePiece = null;
         
@@ -26,10 +45,7 @@
         {
             if (hx != null and hy != null)
             {
-                $map[hx][hy].delPiece("highlight", true, true);
-                $map[hx+1][hy].delPiece("highlight", true, false);
-                $map[hx][hy+1].delPiece("highlight", false, true);
-                $map[hx+1][hy+1].delPiece("highlight", false, false);
+                delPiece("highlight", hx, hy);
                 hx = null;
                 hy = null;
             }
@@ -39,10 +55,7 @@
             
             hx = tx;
             hy = ty;
-            $map[hx][hy].addPiece("highlight", true, true);
-            $map[hx+1][hy].addPiece("highlight", true, false);
-            $map[hx][hy+1].addPiece("highlight", false, true);
-            $map[hx+1][hy+1].addPiece("highlight", false, false);
+            addPiece("highlight", hx, hy);
         }
         
         var moveFunc = function(v)
@@ -78,6 +91,7 @@
             var ty = vexi.math.floor($map.y / 24);
             surface.setMapPos(tx, ty);
         }
+        
         
         //// GRID HANDLING ////////////////////////////////////////////
         
@@ -155,6 +169,7 @@
             }
         }
         
+        
         //// MAP DRAGGING /////////////////////////////////////////////
         
         // invert mouse movement on map dragging
@@ -205,6 +220,7 @@
         
         var press2Func = function(v)
         {
+            if (drag1) return;
             drag2 = true;
             Move --= moveFunc;
             var s = surface;
@@ -224,6 +240,33 @@
         }
         
         thisbox.Press2 ++= press2Func;
+        
+        
+        //// Piece Placing ////////////////////////////////////////////
+        
+        var press1Func = function(v)
+        {
+            cascade = v;
+            if (drag2) return;
+            drag1 = true;
+            if (hx == null or hy == null) return;
+            addPiece("towerbase", hx, hy);
+            addPiece("towerstem", hx, hy-2);
+            addPiece("towertop", hx, hy-4);
+        }
+        
+        thisbox.Press1 ++= press1Func;
+        
+        var release1Func = function(v)
+        {
+            cascade = v;
+            drag1 = false;
+        }
+        
+        thisbox.Release1 ++= release1Func;
+        
+        
+        //// Keyboard Shortcuts ///////////////////////////////////////
         
         thisbox.KeyPressed ++= function(v)
         {
