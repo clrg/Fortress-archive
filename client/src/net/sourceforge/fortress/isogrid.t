@@ -87,26 +87,27 @@
         
         var hideGrid = function()
         {
-            for (var i=0; 100>i; i++)
-                for (var j=0; 100>j; j++)
+            var n = $map.numchildren;
+            var m = $map[0] ? $map[0].numchildren : 0;
+            for (var i=0; n>i; i++)
+                for (var j=0; m>j; j++)
                     $map[i][j].grid.display = false;
         }
         
         var showGrid = function()
         {
-            for (var i=0; 100>i; i++)
-                for (var j=0; 100>j; j++)
-                    $map[i][j].grid.display = true ;
+            var n = $map.numchildren;
+            var m = $map[0] ? $map[0].numchildren : 0;
+            for (var i=0; n>i; i++)
+                for (var j=0; m>j; j++)
+                    $map[i][j].grid.display = true;
         }
         
         /** check what options have been set */
         var invert;
         
-        var checkOptions = function(v) 
-        {
-            if (.game..showgrid) showGrid(); else hideGrid();
-            invert = .game..invertmouse;
-        }
+        .game..showgrid ++= function(v) { cascade = v; if (v) showGrid(); else hideGrid(); };
+        .game..invertmouse ++= function(v) { cascade = v; invert = v; };
         
         /** initialises the map, calling callback() on completion */
         thisbox.init = function(callback)
@@ -133,7 +134,8 @@
                 callSetMapPos();
                 surface.setMap($map);
                 surface.setMapDim(100,100);
-                checkOptions();
+                if (.game..showgrid) showGrid(); else hideGrid();
+                invert = .game..invertmouse;
                 callback();
             }
         }
@@ -223,5 +225,15 @@
         
         thisbox.Press2 ++= press2Func;
         
+        thisbox.KeyPressed ++= function(v)
+        {
+            cascade = v;
+            if (v == "A-g" or v == "A-G")
+                .game..showgrid = !.game..showgrid;
+            else if (v == "A-i" or v == "A-I")
+                .game..invertmouse = !.game..invertmouse;
+        }
+        
     </ui:box>
+    <role:focusable />
 </vexi>
