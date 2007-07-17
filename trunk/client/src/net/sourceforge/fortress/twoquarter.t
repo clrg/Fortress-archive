@@ -103,6 +103,9 @@
     {
         register("highlight");
         register("grid");
+        register("towerbase");
+        register("towerstem");
+        register("towertop");
     }
     
     { init(); }
