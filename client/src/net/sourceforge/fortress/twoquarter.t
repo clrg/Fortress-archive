@@ -15,7 +15,7 @@
         </usage>
     </meta:doc>
     
-    <ui:box layout="absolute" shrink="true" width="48" height="24">
+    <ui:box layout="place" shrink="true" width="48" height="24">
         
         // top-left vs bottom-left
         thisbox.forward;
