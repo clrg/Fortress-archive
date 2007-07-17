@@ -5,15 +5,17 @@
     <widget:surface />
     <ui:box titlebar="Fortress Prototype">
         <widget:cardpane id="cp">
-            <ui:box id="menu" fill=".image.stonebg" orient="vertical">
+            <ui:box id="menu" fill=".image.stonebg">
                 <ui:box />
-                <appitem id="logo" fill=".image.logo" enabled="false" />
-                <appitem id="res" text="Resume" enabled="false" />
-                <appitem id="new" text="New Game" />
-                <appitem id="opt" text="Options" />
-                <appitem text="Quit">
-                    action ++= function(v) { surface.Close = true; return; }
-                </appitem>
+                <ui:box align="center" fill=".image.logo_white" shrink="true" />
+                <ui:box align="center" orient="vertical" shrink="true">
+                    <appitem id="res" text="Resume" enabled="false" />
+                    <appitem id="new" text="New Game" />
+                    <appitem id="opt" text="Options" />
+                    <appitem text="Quit">
+                        action ++= function(v) { surface.Close = true; return; }
+                    </appitem>
+                </ui:box>
                 <ui:box />
             </ui:box>
             <ui:box id="loading" fill=".image.stonebg" orient="vertical">
@@ -36,7 +38,7 @@
                     <widget:spin id="spin_mapheight" width="40" min="100" max="200" step="1" />
                 </appitem>
                 -->
-                <appitem id="showgrid" text="Hide Grid" />
+                <appitem id="showgrid" text="Show Grid" />
                 <appitem id="invertmouse" text="Normal Mouse" />
                 <appitem id="opt_ret" text="Save and Return to Main Menu" />
                 <ui:box />
