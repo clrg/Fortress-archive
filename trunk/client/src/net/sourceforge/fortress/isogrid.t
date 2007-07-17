@@ -134,7 +134,7 @@
                 callSetMapPos();
                 surface.setMap($map);
                 surface.setMapDim(100,100);
-                if (.game..showgrid) showGrid(); else hideGrid();
+                if (!.game..showgrid) hideGrid();
                 invert = .game..invertmouse;
                 callback();
             }
