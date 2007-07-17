@@ -19,7 +19,7 @@
                 <ui:box />
                 <appitem text="Loading Map" />
                 <ui:box height="10" shrink="true" />
-                <busy id="busy" align="center" fill="white" shrink="true" />
+                <busy id="busy" align="center" shrink="true" />
                 <ui:box />
             </ui:box>
             <game id="game" />
