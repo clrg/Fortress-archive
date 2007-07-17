@@ -2,9 +2,11 @@
 
 <vexi xmlns:ui="vexi://ui" xmlns:layout="vexi.layout" xmlns:widget="vexi.widget"
     xmlns="net.sourceforge.fortress">
-    <preloadimages />
+    
     static.invertmouse = false;
     static.showgrid = true;
+    
+    <preloadimages />
     <ui:box orient="vertical">
         <panel id="top" padding="10" vshrink="true">
             <shadowtext text="Fortress Prototype v2" />
@@ -31,8 +33,8 @@
                 <ui:box height="10" />
                 <widget:check id="invert" cursor="hand" focusable="false" selected="false">
                     <shadowtext text="Invert Mouse" />
-            	</widget:check>
-           	-->
+                </widget:check>
+               -->
             </ui:box>
             <layout:border border="#ffcc00" depth="1" shrink="true">
                 <ui:box width="100" height="100" />
