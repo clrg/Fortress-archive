@@ -38,30 +38,48 @@
                     <widget:spin id="spin_mapheight" width="40" min="100" max="200" step="1" />
                 </appitem>
                 -->
-                <appitem id="showgrid" text="Show Grid" />
-                <appitem id="invertmouse" text="Normal Mouse" />
+                <appitem id="showgrid" option="showgrid" text1="Show Grid" text2="Hide Grid" />
+                <appitem id="invertmouse" option="invertmouse" text1="Normal Mouse" text2="Invert Mouse" />
                 <appitem id="opt_ret" text="Save and Return to Main Menu" />
                 <ui:box />
             </ui:box>
             <game id="game" />
         </widget:cardpane>
         
+        
+        //// Option Handling //////////////////////////////////////////
+        
         //thisbox.mapwidth ++= function(v) { return $spin_mapwidth.value; }
         //thisbox.mapheight ++= function(v) { return $spin_mapheight.value; }
         
-        $showgrid.action ++= function(v) 
+        var toggleOption = function(v)
         {
             cascade = v;
-            .game..showgrid = !.game..showgrid;
-            trapee.text = .game..showgrid ? "Show Grid" : "Hide Grid";
+            // this is like .game..gameoption - [""] is equivalent to .
+            // needed as we are using strings for property reference
+            .game[""][trapee.option] = !.game[""][trapee.option];
+            trapee.value = .game[""][trapee.option];
         }
-                    
-        $invertmouse.action ++= function(v) 
+        
+        $showgrid.action ++= toggleOption;
+        $invertmouse.action ++= toggleOption;
+        
+        // ensure menu options represent current settings
+        .game..showgrid ++= function(v) { cascade = v; $showgrid.value = v; };
+        .game..invertmouse ++= function(v) { cascade = v; $invertmouse.value = v; };
+        // initialise to defaults as set in game.t
+        .game..showgrid = .game..showgrid;
+        .game..invertmouse = .game..invertmouse;
+        
+        // FIXME: why does this not work?
+        surface._KeyPressed ++= function(k)
         {
-            cascade = v;
-              .game..invertmouse = !.game..invertmouse;
-              trapee.text = .game..invertmouse ? "Invert Mouse" : "Normal Mouse";
+            cascade = k;
+            if (v == "escape") $cp.show = $menu;
         }
+        
+        
+        //// Game Loading /////////////////////////////////////////////
         
         var showGame = function(v)
         {
@@ -93,6 +111,7 @@
         }
         
         vexi.ui.frame = thisbox;
+        surface = true;
         
     </ui:box>
 </vexi>

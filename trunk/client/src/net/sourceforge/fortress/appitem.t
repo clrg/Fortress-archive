@@ -21,6 +21,8 @@
         thisbox.enabled ++= forwardFunc;
         thisbox.text ++= forwardFunc;
         
+        thisbox.value ++= function(v) { text = v ? text1 : text2; cascade = v; }
+        
         $content.action ++= function(v) { thisbox.action = v; return; }
         
     </layout:pad>
