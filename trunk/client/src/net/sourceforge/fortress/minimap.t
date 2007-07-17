@@ -1,8 +1,8 @@
 <!-- Copyright 2007 licensed under GPL v3 -->
 
 <vexi xmlns:ui="vexi://ui" xmlns="net.sourceforge.fortress">
-    <ui:box height="100" width="100" layout="absolute">
-        <ui:box layout="absolute">
+    <ui:box height="100" width="100" layout="place">
+        <ui:box layout="place">
             $minimap.width ++= function(v) { cascade = v; width = v; }
             $minimap.height ++= function(v) { cascade = v; height = v; }
             <ui:box id="minimap" shrink="true" />
@@ -27,10 +27,10 @@
         /** synchronizes the viewbox with the map */
         var syncView = function()
         {
-            $viewbox.width = $minimap.width * (view_w / map_w) + 1;
-            $viewbox.height = $minimap.height * (view_h / map_h) + 1;
-            $viewbox.x = $minimap.width * (-map_x / map_w);
-            $viewbox.y = $minimap.height * (-map_y / map_h);
+            $viewbox.width = $minimap.width * (view_w / map_w) + 2;
+            $viewbox.height = $minimap.height * (view_h / map_h) + 2;
+            $viewbox.x = $minimap.width * (-map_x / map_w) - 1;
+            $viewbox.y = $minimap.height * (-map_y / map_h) - 1;
         }
         
         var mx, my;

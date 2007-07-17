@@ -13,7 +13,7 @@
         </usage>
     </meta:doc>
     
-    <ui:box layout="absolute">
+    <ui:box layout="place">
         <ui:box id="map" shrink="true" />
         
         //// MAP CREATION /////////////////////////////////////////////
@@ -72,23 +72,6 @@
             activePiece = trapee;
         }
         
-        for (var i=0; 100>i; i++)
-        {
-            $map[i] = vexi.box;
-            $map[i].orient = "vertical";
-            for (var j=0; 100>j; j++)
-            {
-                var t = .twoquarter(vexi.box);
-                t.Enter ++= pieceEnterFunc;
-                t.forward = (i+j)%2 == 0;
-                t.posx = i;
-                t.posy = j;
-                $map[i][j] = t;
-                $map[i][j].grid = 
-                    $map[i][j].addPiece("grid", $map[i][j].forward, true);
-            }
-        }
-        
         var callSetMapPos = function(v)
         {
             var tx = vexi.math.floor($map.x / 48);
@@ -96,12 +79,38 @@
             surface.setMapPos(tx, ty);
         }
         
+        /** initialises the map, calling callback() on completion */
+        thisbox.init = function(callback)
+        {
+            vexi.thread = function(v)
+            {
+                for (var i=0; 100>i; i++)
+                {
+                    $map[i] = vexi.box;
+                    $map[i].orient = "vertical";
+                    for (var j=0; 100>j; j++)
+                    {
+                        var t = .twoquarter(vexi.box);
+                        t.Enter ++= pieceEnterFunc;
+                        t.forward = (i+j)%2 == 0;
+                        t.posx = i;
+                        t.posy = j;
+                        $map[i][j] = t;
+                        $map[i][j].grid = 
+                            $map[i][j].addPiece("grid", $map[i][j].forward, true);
+                        vexi.thread.yield();
+                    }
+                }
+                callSetMapPos();
+                surface.setMap($map);
+                surface.setMapDim(100,100);
+                callback();
+            }
+        }
+        
         surface ++= function(v)
         {
             cascade = v;
-            callSetMapPos();
-            surface.setMap($map);
-            surface.setMapDim(100,100);
             
             surface.moveMapTo = function(x, y)
             {

@@ -12,7 +12,7 @@
             <ui:box id="content" />
         </layout:pad>
         
-        layout = "absolute";
+        layout = "place";
         rdrt..addRedirect(thisbox, $content, "layout", "orient");
         rdrt..addRedirect(thisbox, $pad, "padding");
         
