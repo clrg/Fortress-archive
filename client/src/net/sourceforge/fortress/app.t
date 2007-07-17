@@ -1,12 +1,13 @@
 <!-- Copyright 2007 licensed under GPL v3 -->
 
 <vexi xmlns:ui="vexi://ui" xmlns:layout="vexi.layout" xmlns:widget="vexi.widget"
-    xmlns="net.sourceforge.fortress">
+		xmlns="net.sourceforge.fortress">
     <widget:surface />
     <ui:box titlebar="Fortress Prototype">
         <widget:cardpane id="cp">
             <ui:box id="menu" fill=".image.stonebg" orient="vertical">
                 <ui:box />
+				<appitem id="logo" fill=".image.logo" enabled="false"/>
                 <appitem id="res" text="Resume" enabled="false" />
                 <appitem id="new" text="New Game" />
                 <appitem id="res" text="Options" enabled="false" />
