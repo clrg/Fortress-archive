@@ -3,6 +3,8 @@
 <vexi xmlns:ui="vexi://ui" xmlns:layout="vexi.layout" xmlns:widget="vexi.widget"
     xmlns="net.sourceforge.fortress">
     <preloadimages />
+    static.invertmouse = false;
+    static.showgrid = true;
     <ui:box orient="vertical">
         <panel id="top" padding="10" vshrink="true">
             <shadowtext text="Fortress Prototype v2" />
@@ -21,14 +23,16 @@
                 <minimap id="minimap" />
             </layout:border>
             <ui:box orient="vertical" vshrink="true">
-                <ui:box height="10" />
+            <!--
+            <ui:box height="10" />
                 <widget:check id="gridon" cursor="hand" focusable="false" selected="true">
                     <shadowtext text="Toggle Grid" />
                 </widget:check>
                 <ui:box height="10" />
                 <widget:check id="invert" cursor="hand" focusable="false" selected="false">
                     <shadowtext text="Invert Mouse" />
-                </widget:check>
+            	</widget:check>
+           	-->
             </ui:box>
             <layout:border border="#ffcc00" depth="1" shrink="true">
                 <ui:box width="100" height="100" />
@@ -39,9 +43,9 @@
         
         //// Map / Sidebar Interaction ////////////////////////////////
         
-        $gridon.selected ++= function(v) { cascade = v; $map.gridon = v; }
-        $invert.selected ++= function(v) { cascade = v; $map.invert = v; }
-        
+        static.showgrid ++= function(v) { cascade = v; $map.gridon = v; }
+        static.invertmouse ++= function(v) { cascade = v; $map.invert = v; }
+       
         //// Panel Layout /////////////////////////////////////////////
         
         $top.height ++= function(v)

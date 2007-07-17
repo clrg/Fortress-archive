@@ -5,6 +5,7 @@
         <ui:box display="false">
             <ui:box fill=".image.iso96.grid" />
             <ui:box fill=".image.iso96.highlight" />
+            <ui:box fill=".image.logo" />
             <ui:box name="grass" loop="10" />
             
             for (var i=0; numchildren>i; i++)
