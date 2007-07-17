@@ -79,6 +79,35 @@
             surface.setMapPos(tx, ty);
         }
         
+        //// GRID HANDLING ////////////////////////////////////////////
+        
+        /* grid is a special piece referenced to tile.grid during map
+         * creation - so displaying the grid is as a simple as putting
+         * to tile.grid.display */
+        
+        var hideGrid = function()
+        {
+            for (var i=0; 100>i; i++)
+                for (var j=0; 100>j; j++)
+                    $map[i][j].grid.display = false;
+        }
+        
+        var showGrid = function()
+        {
+            for (var i=0; 100>i; i++)
+                for (var j=0; 100>j; j++)
+                    $map[i][j].grid.display = true ;
+        }
+        
+        /** check what options have been set */
+        var invert;
+        
+        var checkOptions = function(v) 
+        {
+            if (.game..showgrid) showGrid(); else hideGrid();
+            invert = .game..invertmouse;
+        }
+        
         /** initialises the map, calling callback() on completion */
         thisbox.init = function(callback)
         {
@@ -104,6 +133,7 @@
                 callSetMapPos();
                 surface.setMap($map);
                 surface.setMapDim(100,100);
+                checkOptions();
                 callback();
             }
         }
@@ -123,38 +153,9 @@
             }
         }
         
-        //// GRID HANDLING ////////////////////////////////////////////
-        
-        /* grid is a special piece referenced to tile.grid during map
-         * creation - so displaying the grid is as a simple as putting
-         * to tile.grid.display */
-        
-        var hideGrid = function()
-        {
-            for (var i=0; 100>i; i++)
-                for (var j=0; 100>j; j++)
-                    $map[i][j].grid.display = false;
-        }
-        
-        var showGrid = function()
-        {
-            for (var i=0; 100>i; i++)
-                for (var j=0; 100>j; j++)
-                    $map[i][j].grid.display = true ;
-        }
-        
-        /** gridon property used to control toggling of the map grid */
-        thisbox.gridon ++= function(v)
-        {
-            cascade = v;
-            if (gridon) showGrid(); else hideGrid();
-        }
-        
         //// MAP DRAGGING /////////////////////////////////////////////
         
         // invert mouse movement on map dragging
-        thisbox.invert = false;
-        
         var drag1 = false;
         var drag2 = false;
         var mx;
