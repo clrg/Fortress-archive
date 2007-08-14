@@ -1,5 +1,5 @@
 public class MapSection {
-    private float height;
+    private double height;
     private int type;
 
     //Constructor
@@ -8,7 +8,7 @@ public class MapSection {
         this.type = 0;
     }
 
-    public float getHeight() {
+    public double getHeight() {
         return this.height;
     }
     
@@ -16,7 +16,7 @@ public class MapSection {
         return this.type;
     }
 
-    public void setHeight(float new_height) {
+    public void setHeight(double new_height) {
         this.height = new_height;
     }
 
