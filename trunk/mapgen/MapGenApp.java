@@ -25,7 +25,7 @@ public class MapGenApp extends JPanel {
     public static void main(String[] args) {
         MapGenApp app = new MapGenApp();
         app.map = new MapGenerator(600,600);
-        app.map.generateMap_HillAlgorithm(5);
+        app.map.generateMap_HillAlgorithm(1000);
         JFrame frame = new JFrame("mapgen");
         frame.setBackground(Color.white);
         app.setBackground(Color.white);
