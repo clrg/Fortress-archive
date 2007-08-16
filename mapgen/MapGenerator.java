@@ -47,14 +47,19 @@ public class MapGenerator {
             int y1 = rand.nextInt(this.width);
             //generate random radius
             int radius = rand.nextInt(this.width/4) + 1;
-            //for each point on the map, calculate height
-            for (int x2 = 0; x2 < this.height; x2++)
-                for (int y2 = 0; y2 < this.width; y2++) {
+            //for each point in the surrounding box, calculate height
+            int boxx = (x1-radius-1 < 0) ? 0 : (x1-radius-1);
+            int boxy = (y1-radius-1 < 0) ? 0 : (y1-radius-1);
+            int boxx2 = (x1+radius+1 > this.height) ? this.height : (x1+radius+1);
+            int boxy2 = (y1+radius+1 > this.width) ? this.width : (y1+radius+1);
+            for (int x2 = boxx; x2 < boxx2; x2++) {
+                for (int y2 = boxy; y2 < boxy2; y2++) {
                     double value = Math.pow(radius, 2) - (Math.pow((y2-y1),2) + Math.pow((x2-x1),2));
                     //drop negative values
                     if (value > 0)
                         map[x2][y2].setHeight(value + map[x2][y2].getHeight());
                 }
+            }
         }
         //find min and max for normalization
         double min = map[0][0].getHeight();
