@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.lang.Math;
 
 public class MapGenerator {
     private MapSection[][] map;
@@ -40,51 +41,32 @@ public class MapGenerator {
 
     public void generateMap_HillAlgorithm(int iterations) {
         Random rand = new Random();
-        for (int i = 0; i < iterations; i++) {
+        for (int i = iterations; i > 0; i--) {
             //generate random centerpoint
             int x1 = rand.nextInt(this.height);
             int y1 = rand.nextInt(this.width);
             //generate random radius
             int radius = rand.nextInt(this.width/4) + 1;
-            double radius2 = java.lang.Math.pow(radius, 2);
             //for each point on the map, calculate height
-            for (int x2 = 0; x2 < this.height; x2++) {
+            for (int x2 = 0; x2 < this.height; x2++)
                 for (int y2 = 0; y2 < this.width; y2++) {
-                    double left = java.lang.Math.pow((x2-x1),2);
-                    double right = java.lang.Math.pow((y2-y1),2);
-                    double value = radius2 - (left + right);
-                    if (value > 0) {
-                        double h = map[x2][y2].getHeight();
-                        map[x2][y2].setHeight(value + h);
-                    }
+                    double value = Math.pow(radius, 2) - (Math.pow((y2-y1),2) + Math.pow((x2-x1),2));
+                    //drop negative values
+                    if (value > 0)
+                        map[x2][y2].setHeight(value + map[x2][y2].getHeight());
                 }
-            }
         }
-        //normalize
-        //find min and max
+        //find min and max for normalization
         double min = map[0][0].getHeight();
         double max = map[0][0].getHeight();
-        for (int x = 0; x < this.height; x++) {
+        for (int x = 0; x < this.height; x++)
             for (int y = 0; y < this.width; y++) {
-            	min = (map[x][y].getHeight() < min) ? map[x][y].getHeight() : min;
-            	max = (map[x][y].getHeight() > max) ? map[x][y].getHeight() : max;
+                min = (map[x][y].getHeight() < min) ? map[x][y].getHeight() : min;
+                max = (map[x][y].getHeight() > max) ? map[x][y].getHeight() : max;
             }
-        }
-        System.out.println("max : "+ max);
-        System.out.println("min : "+ min);
-        double nmin = 0;
-        double nmax = 0;
-        for (int x = 0; x < this.height; x++) {
-             for (int y = 0; y < this.width; y++) {
-                 double h = map[x][y].getHeight();
-                 double value = (h - min) / (max - min);
-                 nmin = (value < nmin) ? value : nmin;
-                 nmax = (value > nmax) ? value : nmax;
-                 //System.out.println(x + " " + y + " " + map[x][y].getHeight() + " " + value);
-                 map[x][y].setHeight(value);
-             }
-        }
-        System.out.println("nmax : "+ nmax);
-        System.out.println("nmin : "+ nmin);
+        //normalize
+        for (int x = 0; x < this.height; x++)
+             for (int y = 0; y < this.width; y++)
+                 map[x][y].setHeight((map[x][y].getHeight() - min) / (max - min));
     }
 }
