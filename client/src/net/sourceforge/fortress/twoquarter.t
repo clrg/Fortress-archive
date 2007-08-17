@@ -22,28 +22,34 @@
         // used to give the graphics a non-repeating feel
         thisbox.seed = vexi.math.floor(vexi.math.random()*10);
         // used to set the base fill of the tile
-        thisbox.type = "grass";
+        thisbox.tile = "grass";
         
-        var sync = function() { fill = .image[type][type+seed]; }
+        var sync = function() { fill = .iso96[tile][tile+seed]; }
         sync();
         
-        thisbox.addPiece = function(type, top, left)
+        thisbox.addPiece = function(type, top, left, zoffset)
         {
-            var z = static.zindex[type];
+            type = type.split('.');
+            var z = static.zindex[type[0]];
             if (z == null) throw "tried to add nonregistered type '"+type+"' from "+posx+", "+posy;
-            var i = 0;
+            // dont add null/undeclared to z
+            z += zoffset ? zoffset : 0;
             var p;
+            var i = 0;
             while (numchildren > i)
             {
                 p = thisbox[i];
-                if (p.type == type and p.left == left and p.top == top)
-                    throw "tried to add a duplicate tile piece of type '"+type+"' from "+posx+", "+posy;
+                if (p.z == z and p.left == left and p.top == top)
+                    throw "tried to add a duplicate tile piece of type '"+type[0]+"' from "+posx+", "+posy;
                 if (p.z > z) break;
                 i++;
             }
             
+            var r = .iso96;
+            for (var i=0; type.length>i; i++)
+                r = r[type[i]];
             var b = vexi.box;
-            b.fill = .image[static.tileset][type];
+            b.fill = r;
             b.left = left;
             b.top = top;
             b.shrink = true;
@@ -56,13 +62,17 @@
             return b;
         }
         
-        thisbox.delPiece = function(type, top, left)
+        thisbox.delPiece = function(type, top, left, zoffset)
         {
+            var z = static.zindex[type];
+            if (z == null) throw "tried to add nonregistered type '"+type+"' from "+posx+", "+posy;
+            // dont add null/undeclared to z
+            z += zoffset ? zoffset : 0;
             var p;
             for (var i=0; numchildren>i; i++)
             {
                 p = thisbox[i];
-                if (p.type == type and p.left == left and p.top == top)
+                if (p.z == z and p.left == left and p.top == top)
                 {
                     thisbox[i] = null;
                     return;
@@ -103,9 +113,7 @@
     {
         register("highlight");
         register("grid");
-        register("towerbase");
-        register("towerstem");
-        register("towertop");
+        register("squaretower");
     }
     
     { init(); }
