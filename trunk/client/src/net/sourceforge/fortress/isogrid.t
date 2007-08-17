@@ -250,9 +250,10 @@
             if (drag2) return;
             drag1 = true;
             if (hx == null or hy == null) return;
-            addPiece("towerbase", hx, hy);
-            addPiece("towerstem", hx, hy-2);
-            addPiece("towertop", hx, hy-4);
+            addPiece("squaretower.base", hx, hy);
+            addPiece("squaretower.stem", hx, hy-2, 1);
+            addPiece("squaretower.top1", hx, hy-4, 2);
+            addPiece("squaretower.top2", hx, hy-6, 3);
         }
         
         thisbox.Press1 ++= press1Func;
