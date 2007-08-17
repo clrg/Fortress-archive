@@ -22,9 +22,9 @@
         // used to give the graphics a non-repeating feel
         thisbox.seed = vexi.math.floor(vexi.math.random()*10);
         // used to set the base fill of the tile
-        thisbox.tile = "grass";
+        thisbox.base = "grass";
         
-        var sync = function() { fill = .iso96[tile][tile+seed]; }
+        var sync = function() { fill = .iso96[base][base+seed]; }
         sync();
         
         thisbox.addPiece = function(type, top, left, zoffset)
@@ -32,15 +32,15 @@
             type = type.split('.');
             var z = static.zindex[type[0]];
             if (z == null) throw "tried to add nonregistered type '"+type+"' from "+posx+", "+posy;
-            // dont add null/undeclared to z
-            z += zoffset ? zoffset : 0;
+            // static.z*zoffset allows us to place tiles untouchably infronts
+            z += static.z * (zoffset ? zoffset : 0);
             var p;
             var i = 0;
             while (numchildren > i)
             {
                 p = thisbox[i];
                 if (p.z == z and p.left == left and p.top == top)
-                    throw "tried to add a duplicate tile piece of type '"+type[0]+"' from "+posx+", "+posy;
+                    throw "tried to add a duplicate piece '"+type[0]+"("+z+") ' from "+posx+", "+posy;
                 if (p.z > z) break;
                 i++;
             }
@@ -66,8 +66,8 @@
         {
             var z = static.zindex[type];
             if (z == null) throw "tried to add nonregistered type '"+type+"' from "+posx+", "+posy;
-            // dont add null/undeclared to z
-            z += zoffset ? zoffset : 0;
+            // static.z*zoffset allows us to place tiles untouchably infront
+            z += static.z * (zoffset ? zoffset : 0);
             var p;
             for (var i=0; numchildren>i; i++)
             {
@@ -78,7 +78,7 @@
                     return;
                 }
             }
-            throw "tried to clear a non-existent piece of type '"+type+"' from "+posx+", "+posy;
+            throw "tried to clear a non-existent piece of type '"+type[0]+"' from "+posx+", "+posy;
         }
         
         thisbox.posx ++= static.posFunc;
