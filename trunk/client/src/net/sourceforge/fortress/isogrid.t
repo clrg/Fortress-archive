@@ -19,22 +19,22 @@
         
         //// PIECE MANAGEMENT /////////////////////////////////////////
         
-        var addPiece = function(piece, px, py)
+        var addPiece = function(piece, px, py, zoff)
         {
             if (!$map[px][py]) return;
-            $map[px][py].addPiece(piece, true, true);
-            $map[px+1][py].addPiece(piece, true, false);
-            $map[px][py+1].addPiece(piece, false, true);
-            $map[px+1][py+1].addPiece(piece, false, false);
+            $map[px][py].addPiece(piece, true, true, zoff);
+            $map[px+1][py].addPiece(piece, true, false, zoff);
+            $map[px][py+1].addPiece(piece, false, true, zoff);
+            $map[px+1][py+1].addPiece(piece, false, false, zoff);
         }
         
         var delPiece = function(piece, px, py)
         {
             if (!$map[px][py]) return;
-            $map[px][py].delPiece(piece, true, true);
-            $map[px+1][py].delPiece(piece, true, false);
-            $map[px][py+1].delPiece(piece, false, true);
-            $map[px+1][py+1].delPiece(piece, false, false);
+            $map[px][py].delPiece(piece, true, true, zoff);
+            $map[px+1][py].delPiece(piece, true, false, zoff);
+            $map[px][py+1].delPiece(piece, false, true, zoff);
+            $map[px+1][py+1].delPiece(piece, false, false, zoff);
         }
         
         var activePiece = null;
