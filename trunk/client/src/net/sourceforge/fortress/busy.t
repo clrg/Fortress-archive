@@ -1,6 +1,6 @@
 <vexi xmlns:ui="vexi://ui">
     <ui:box width="32" height="32" layout="place">
-        <ui:box id="preload" display="false" fill=".net.sourceforge.fortress.image.process" />
+        <ui:box id="preload" display="false" fill=":.net.sourceforge.fortress.image.process" />
         <ui:box id="icon" shrink="true" />
         
         var active = false;

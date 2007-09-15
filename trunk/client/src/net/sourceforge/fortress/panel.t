@@ -6,8 +6,8 @@
        <author>Charles Goodwin</author>
     </meta:doc>
     
-    <ui:box redirect="$content">
-        <ui:box id="bg" fill=".image.stonebg" />
+    <ui:box redirect=":$content">
+        <ui:box id="bg" fill=":.image.stonebg" />
         <layout:pad id="pad">
             <ui:box id="content" />
         </layout:pad>

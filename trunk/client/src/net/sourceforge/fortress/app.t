@@ -5,9 +5,9 @@
     <widget:surface />
     <ui:box titlebar="Fortress Prototype">
         <widget:cardpane id="cp">
-            <ui:box id="menu" fill=".image.stonebg">
+            <ui:box id="menu" fill=":.image.stonebg">
                 <ui:box />
-                <ui:box align="center" fill=".image.logo_white" shrink="true" />
+                <ui:box align="center" fill=":.image.logo_white" shrink="true" />
                 <ui:box align="center" orient="vertical" shrink="true">
                     <appitem id="res" text="Resume" enabled="false" />
                     <appitem id="new" text="New Game" />
@@ -18,14 +18,14 @@
                 </ui:box>
                 <ui:box />
             </ui:box>
-            <ui:box id="loading" fill=".image.stonebg" orient="vertical">
+            <ui:box id="loading" fill=":.image.stonebg" orient="vertical">
             <ui:box />
                 <appitem text="Loading Map" />
                 <ui:box height="10" shrink="true" />
                 <busy id="busy" align="center" shrink="true" />
                 <ui:box />
             </ui:box>
-            <ui:box id="options" fill=".image.stonebg" orient="vertical">
+            <ui:box id="options" fill=":.image.stonebg" orient="vertical">
                 <ui:box />
                 <appitem text="Options Menu" enabled="false" />
                 <ui:box height="10" shrink="true" />
