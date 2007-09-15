@@ -38,7 +38,7 @@
             </ui:box>
             <layout:border border="#ffcc00" depth="1" shrink="true">
                 <ui:box width="100" height="100" layout="place">
-                    <ui:box fill=".image.logo_white" />
+                    <ui:box fill=":.image.logo_white" />
                 </ui:box>
             </layout:border>
         </panel>
