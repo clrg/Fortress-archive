@@ -23,18 +23,15 @@ public class MapGenerator {
         this.width = width;
         this.height = height;
         this.map = new MapSection[this.width][this.height];
-        for(int h = 0; h < height; h++) {
-            for(int w = 0; w < width; w++) {
+        for(int h = 0; h < height; h++)
+            for(int w = 0; w < width; w++)
                 this.map[h][w] = new MapSection();
-            }
-        }
     }
 
     public void printMap() {
         for(int h = 0; h < this.height; h++) {
-            for (int w = 0; w < this.width; w++) {
+            for (int w = 0; w < this.width; w++)
                 System.out.print(this.map[h][w].getHeight() + " "); 
-            }
             System.out.println();
         }
     }
