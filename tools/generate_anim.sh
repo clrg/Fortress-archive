@@ -57,8 +57,10 @@ done
 
 #generate complete sequence
 cmd="convert "
-for sequence in $(ls *${animation}_f*_sequence*);
+for direction in e w n s ne se nw sw;
 do
+    sequence="${animation}_f${direction}_sequence.png"
+    echo ${sequence}
     cmd="${cmd} $sequence "
 done
 cmd="${cmd} -append ${animation}_sequence.png"
