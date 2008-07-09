@@ -7,8 +7,8 @@ class IsoSprite(pyglet.sprite.Sprite):
     x-y component that the camera is facing.
     ''' 
     def __init__(self, 
-                 img, 
-                 x=0, y=0, 
+                 img=None, 
+                 x=0, y=0, z=0,
                  blend_src=GL_SRC_ALPHA,
                  blend_dest=GL_ONE_MINUS_SRC_ALPHA,
                  batch=None,
@@ -17,6 +17,9 @@ class IsoSprite(pyglet.sprite.Sprite):
         '''Create an IsoSprite.
         See pyglet sprite documentation
         '''
+        if img is None:
+            img = pyglet.image.CheckerImagePattern().create_image(96,48)
+        self._z = z
         super(IsoSprite, self).__init__(img,x,y,blend_src,blend_dest,batch,group,usage)
           
     def _create_vertex_list(self):
@@ -33,8 +36,7 @@ class IsoSprite(pyglet.sprite.Sprite):
 
     def _update_position(self):
         img = self._texture
-        z1 = 0
-        z2 = 0 
+        z1 = z2 = 0
         if not self._visible:
             self._vertex_list.vertices[:] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         elif self._scale != 1.0:
@@ -56,30 +58,41 @@ class IsoSprite(pyglet.sprite.Sprite):
         glPushMatrix()
         #self._vertex_list.draw(GL_QUADS)
         self._group.set_state_recursive()
-        glTranslatef(self._x,self._y,0)
+        glTranslatef(self._x,self._y,self._z)
         #align with the view direction
         glRotatef(-Camera.VIEW_Z_ROTATION,0,0,1)
         #and stand the sprite up
         glRotatef(90,1,0,0)
         self._vertex_list.draw(GL_QUADS)
         self._group.unset_state_recursive()
-        #self._vertex_list.draw(GL_LINES)
+        #self._vertex_list.draw(GL_LINES) #for debugging
         glPopMatrix()
 
 class Tower(object):
-    def __init__(self,base,stem,top,x,y,level=0):
+    MAX_HEIGHT=3
+    def __init__(self,base=None,stem=None,top=None,x=0,y=0,level=0):
         self.x = x
         self.y = y
         self.level = level
-        self._pieces = [IsoSprite(base,x,y)]
-        for i in range(level):
-            stem.anchor_y = -base.height - i*stem.height
-            self._pieces.append(IsoSprite(stem,x,y))
-        top.anchor_y = -base.height - stem.height*level
-        self._pieces.append(IsoSprite(top,x,y))
-        self._pieces.reverse() # so they are drawn top to bottom
-    
+        self._base = IsoSprite(base,x,y,0)
+        self._stem = IsoSprite(stem,x,y,self._base.height)
+        self._top = IsoSprite(top,x,y,self._base.height+self._stem.height*level)
+    def adjust_top(self):
+        self._top._z = self._base.height+self._stem.height*self.level
+    def grow(self):
+        if self.level == 3:
+            return
+        self.level +=1
+        self.adjust_top()
+    def shrink(self):
+        if self.level == 0:
+            return   
+        self.level -=1
+        self.adjust_top()
     def draw(self):
-        for piece in self._pieces:
-            piece.draw()
+        self._base.draw()
+        for i in range(self.level):
+            self._stem._z = self._base.height+self._stem.height*i
+            self._stem.draw()
+        self._top.draw()
     

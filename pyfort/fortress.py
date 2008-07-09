@@ -1,5 +1,6 @@
 from pyglet.gl import *
-from pyglet.window import key
+from pyglet.window import mouse, key
+
 from world import *
 from sprites import *
 import random
@@ -20,22 +21,17 @@ def scratch():
     top = pyglet.resource.image('squaretower/top.png')
     top.anchor_x = 48
     towers = []
-    #tower = Tower(base,stem,top,x=tile_size,y=tile_size,level=2)
-    #tower2 = Tower(base,stem,top, x=tile_size*4,y=tile_size*2, level = 0)
-    #tower3 = Tower(base,stem,top, x=0,y=tile_size*3, level = 1)
-    
+    global myrot
+    myrot = 0
     window = pyglet.window.Window()
     @window.event
     def on_draw():
         glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT)
-        #grid.blit(200,100)
         camera.apply()
+        glRotatef(myrot,0,0,1)
         terrain.draw()
         for tower in towers:
             tower.draw()
-        #tower2.draw()
-        #tower3.draw()
-        #tower.draw()
 
     @window.event
     def on_resize(width, height):
@@ -46,20 +42,34 @@ def scratch():
         
     @window.event
     def on_key_press(symbol, modifiers):
-        global tile_size
+        global myrot
+        if symbol == key.RIGHT:
+            myrot +=5
+        elif symbol == key.LEFT:
+            myrot -=5
         if symbol == key.SPACE:
             print 'clear'
             while len(towers)>0:
                 tower = towers.pop()
-                terrain.getTile(tower.x,tower.y).occupied = False
+                terrain.getTile(tower.x,tower.y).leave(tower)
     @window.event
     def on_mouse_press(x, y, button, modifiers):
         x_world, y_world = camera.to_world_ground_coords(x,y)
         tile = terrain.getTile(x_world, y_world)
-        if tile is not None and not tile.occupied:
-            tile.occupied = True
-            towers.append(Tower(base,stem,top,x=tile.x,y=tile.y,level=random.randint(0,3)))
+        if tile is None:
+            return
+        if button == mouse.LEFT and not tile.occupied:
+            tower = Tower(base,stem,top,x=tile.x,y=tile.y,level=0)
+            tile.occupy(tower)
+            towers.append(tower)
             towers.sort(key = lambda a:  -(a.x**2 + a.y**2))
+        elif button == mouse.LEFT and tile.occupied:
+            tower = tile.occupants[0]
+            tower.grow()
+        elif button == mouse.RIGHT and tile.occupied:
+            tower = tile.occupants[0]
+            tower.shrink()
+        
     def perspective(width,height):
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()

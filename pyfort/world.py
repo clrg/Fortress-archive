@@ -14,12 +14,12 @@ class Camera(object):
     def isometric(self,width,height):
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        glOrtho(-width/2.,width/2.,-height/2.,height/2.,0,Camera.FAR)
+        glOrtho(-width/2.,width/2.,-height/2.,height/2.,-256,Camera.FAR)
         glMatrixMode(GL_MODELVIEW)
     def apply(self):
         glLoadIdentity()
         glRotatef(Camera.VIEW_X_ROTATION,1,0,0)
-        glRotatef(Camera.VIEW_Z_ROTATION,0,0,1)
+        glRotatef(Camera.VIEW_Z_ROTATION,0,0,1)   
         glTranslatef(-self._x,-self._y,-Camera.VIEW_HEIGHT)
     def to_world_ground_coords(self,x,y):
         '''
@@ -70,6 +70,7 @@ class Tile(pyglet.sprite.Sprite):
     occupied, meaning built on or not.
     ''' 
     grass_image = pyglet.resource.image('grass.png')
+    occupied = property(lambda self: len(self.occupants) != 0)
     def __init__(self, 
                  img=grass_image, 
                  x=0, y=0, 
@@ -84,4 +85,14 @@ class Tile(pyglet.sprite.Sprite):
         super(Tile, self).__init__(img,x,y,blend_src,blend_dest,batch,group,usage)
         self.center_x = x+TILE_SIZE/2
         self.center_y = y+TILE_SIZE/2
-        self.occupied = False
+        self.occupants = []
+    def occupy(self, occupant):
+        '''have the given occupant occupy this tile
+        '''
+        if occupant not in self.occupants:
+            self.occupants.append(occupant)
+    def leave(self, occupant):
+        ''' have the given occupant no longer occupy this tile_size
+        '''
+        if occupant in self.occupants:
+            self.occupants.remove(occupant)
