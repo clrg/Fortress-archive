@@ -3,18 +3,23 @@ import unittest
 
 from world import *
 
+def suite():
+    return make_suite(TerrainTests, TileTests)
+
 class TerrainTests(BasicTestSet):
+    TEST_WIDTH = 4
+    TEST_HEIGHT = 4
     def setUp(self):
-        self.terrain = Terrain(width = 40, height = 40)
+        self.terrain = Terrain(width = TerrainTests.TEST_WIDTH, height = TerrainTests.TEST_HEIGHT)
     def tearDown(self):
         pass
     @testmethod
     def testSize(self):
-        self.failUnless(self.terrain.width == 40, 'terrain width incorrect')
-        self.failUnless(self.terrain.height == 40, 'terrain height incorrect')
+        self.failUnless(self.terrain.width == TerrainTests.TEST_WIDTH, 'terrain width incorrect')
+        self.failUnless(self.terrain.height == TerrainTests.TEST_HEIGHT, 'terrain height incorrect')
     @testmethod
     def testTileArrayBoundaries(self):
-        self.failUnlessRaises(IndexError,self.terrain.tiles.__getitem__,40)
+        self.failUnlessRaises(IndexError,self.terrain.tiles.__getitem__,TerrainTests.TEST_WIDTH)
         t = Terrain(width=1, height=2)
         #this should be ok 
         t.tiles[0][1]
@@ -61,6 +66,21 @@ class TileTests(BasicTestSet):
     @testmethod
     def testNewTileNotOccupied(self):
         self.failIf(self.tile.occupied)
+    @testmethod
+    def testOccupy(self):
+        a = object()
+        self.tile.occupy(a)
+        self.failUnless(self.tile.occupied)
+        self.failUnless(a in self.tile.occupants)
+        self.tile.occupy(a)
+        self.failIf(len(self.tile.occupants) > 1)
+    @testmethod
+    def testLeave(self):
+        a = object()
+        self.tile.occupy(a)
+        self.tile.leave(a)
+        self.failIf(a in self.tile.occupants)
+        #make sure nothing bad happens if we try to leave and aren't occupying the tile
+        self.tile.leave(a)
         
 
-unittest.TextTestRunner().run(suite(TileTests, TerrainTests))

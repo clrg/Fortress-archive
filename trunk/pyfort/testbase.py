@@ -13,7 +13,7 @@ class BasicTestSet(unittest.TestCase):
         return unittest.TestSuite(map(cls,testNames))
 
 
-def suite(*args):
+def make_suite(*args):
     fullSuite = unittest.TestSuite()
     for testSet in args:
         fullSuite.addTest(testSet.suite())
