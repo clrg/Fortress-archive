@@ -62,7 +62,7 @@ class IsoSprite(pyglet.sprite.Sprite):
         #align with the view direction
         glRotatef(-Camera.VIEW_Z_ROTATION,0,0,1)
         #and stand the sprite up
-        glRotatef(90,1,0,0)
+        glRotatef(-Camera.VIEW_X_ROTATION,1,0,0)
         self._vertex_list.draw(GL_QUADS)
         self._group.unset_state_recursive()
         #self._vertex_list.draw(GL_LINES) #for debugging

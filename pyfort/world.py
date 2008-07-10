@@ -4,7 +4,7 @@ pyglet.resource.reindex()
 
 class Camera(object):
     VIEW_Z_ROTATION = 45
-    VIEW_X_ROTATION = -60
+    VIEW_X_ROTATION = -60 #90+34.192502848038274
     VIEW_HEIGHT = 128
     FAR=2048
     fov=45  
