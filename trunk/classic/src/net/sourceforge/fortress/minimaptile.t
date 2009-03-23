@@ -3,6 +3,7 @@
 <vexi xmlns:ui="vexi://ui" xmlns="net.sourceforge.fortress">
     <ui:box width="1" height="1" shrink="true">
         
+        /** returns a random tint to make the minimap look less bland */
         var getFillHex = function(s) {
             switch (s) {
             case 0: return "50";
@@ -21,6 +22,9 @@
         
         thisbox.setType = function(t, s) {
             switch (t) {
+            case "castle":
+                fill = "#8B4513";
+                break;
             case "mud":
                 fill = "#5f2a07";
                 break;

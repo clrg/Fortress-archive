@@ -15,7 +15,7 @@
         </panel>
         <ui:box>
             <panel id="left" hshrink="true" orient="vertical" padding="5" />
-            <layout:border border="#ffcc00" depth="1">
+            <layout:border border="#ffcc00" depth="1" layout="place">
                 <isogrid id="map" />
             </layout:border>
             <panel id="right" hshrink="true" orient="vertical" padding="5" />

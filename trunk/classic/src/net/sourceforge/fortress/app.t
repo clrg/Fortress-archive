@@ -13,7 +13,7 @@
                     <appitem id="new" text="New Game" />
                     <appitem id="opt" text="Options" />
                     <appitem text="Quit">
-                        action ++= function(v) { surface.Close = true; return; }
+                        action ++= function(v) { surface.frame.Close = true; return; }
                     </appitem>
                 </ui:box>
                 <ui:box />
@@ -52,8 +52,7 @@
         //thisbox.mapwidth ++= function(v) { return $spin_mapwidth.value; }
         //thisbox.mapheight ++= function(v) { return $spin_mapheight.value; }
         
-        var toggleOption = function(v)
-        {
+        var toggleOption = function(v) {
             cascade = v;
             // this is like .game..gameoption - [""] is equivalent to .
             // needed as we are using strings for property reference
@@ -72,8 +71,7 @@
         .game..invertmouse = .game..invertmouse;
         
         // FIXME: why does this not work?
-        surface._KeyPressed ++= function(k)
-        {
+        surface.event._KeyPressed ++= function(k) {
             cascade = k;
             if (v == "escape") $cp.show = $menu;
         }
@@ -81,15 +79,13 @@
         
         //// Game Loading /////////////////////////////////////////////
         
-        var showGame = function(v)
-        {
+        var showGame = function(v) {
             $busy.stop();
             $cp.show = $game;
         }
         
         /* start a new game */
-        $new.action ++= function(v)
-        {
+        $new.action ++= function(v) {
             $game.init(showGame);
             $busy.start();
             $cp.show = $loading;
@@ -97,21 +93,18 @@
         }
         
         /** show the options menu */
-        $opt.action ++= function(v)
-        {
+        $opt.action ++= function(v) {
             $cp.show = $options;
             return;
         }
         
         /** return from the options menu to the main menu */
-        $opt_ret.action ++= function(v)
-        {
+        $opt_ret.action ++= function(v) {
             $cp.show = $menu;
             return;
         }
         
         vexi.ui.frame = thisbox;
-        surface = true;
         
     </ui:box>
 </vexi>
