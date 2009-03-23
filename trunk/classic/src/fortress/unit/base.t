@@ -1,6 +1,6 @@
 <vexi xmlns:ui="vexi://ui" xmlns="fortress.unit">
-    <ui:box redirect="null" layout="layer" width="32" height="32">
-        <ui:box id="image" align="topleft" shrink="true" />
+    <ui:box align="topleft" layout="place" width="32" height="32">
+        <ui:box id="image" shrink="true" />
         
         var xoffset = 0;
         var yoffset = 0;

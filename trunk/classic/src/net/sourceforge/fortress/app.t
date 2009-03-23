@@ -3,12 +3,12 @@
 <vexi xmlns:ui="vexi://ui" xmlns:layout="vexi.layout" xmlns:widget="vexi.widget"
         xmlns="net.sourceforge.fortress">
     <widget:surface />
-    <ui:box titlebar="Fortress Prototype">
-        <widget:cardpane id="cp">
+    <ui:box framewidth="640" frameheight="480" titlebar="Fortress Prototype v2">
+        <layout:cardpane id="cp">
             <ui:box id="menu" fill=":.image.stonebg">
                 <ui:box />
-                <ui:box align="center" fill=":.image.logo_white" shrink="true" />
-                <ui:box align="center" orient="vertical" shrink="true">
+                <ui:box fill=":.image.logo_white" shrink="true" />
+                <ui:box orient="vertical" shrink="true">
                     <appitem id="res" text="Resume" enabled="false" />
                     <appitem id="new" text="New Game" />
                     <appitem id="opt" text="Options" />
@@ -22,7 +22,7 @@
             <ui:box />
                 <appitem text="Loading Map" />
                 <ui:box height="10" shrink="true" />
-                <busy id="busy" align="center" shrink="true" />
+                <busy id="busy" shrink="true" />
                 <ui:box />
             </ui:box>
             <ui:box id="options" fill=":.image.stonebg" orient="vertical">
@@ -44,7 +44,7 @@
                 <ui:box />
             </ui:box>
             <game id="game" />
-        </widget:cardpane>
+        </layout:cardpane>
         
         
         //// Option Handling //////////////////////////////////////////

@@ -1,0 +1,8 @@
+{
+  "source" : [
+    "F/fortress-classic/src",
+    "LVexi Game Library",
+    "LVexi Platform"
+  ],
+  "projects" : [ ]
+}

@@ -13,14 +13,13 @@
         </usage>
     </meta:doc>
     
-    <ui:box layout="place">
+    <ui:box align="topleft" layout="place">
         <ui:box id="map" shrink="true" />
         
         
         //// PIECE MANAGEMENT /////////////////////////////////////////
         
-        var addPiece = function(piece, px, py, zoff)
-        {
+        var addPiece = function(piece, px, py, zoff) {
             if (!$map[px][py]) return;
             $map[px][py].addPiece(piece, true, true, zoff);
             $map[px+1][py].addPiece(piece, true, false, zoff);
@@ -28,8 +27,7 @@
             $map[px+1][py+1].addPiece(piece, false, false, zoff);
         }
         
-        var delPiece = function(piece, px, py)
-        {
+        var delPiece = function(piece, px, py) {
             if (!$map[px][py]) return;
             $map[px][py].delPiece(piece, true, true, zoff);
             $map[px+1][py].delPiece(piece, true, false, zoff);
@@ -41,10 +39,8 @@
         
         var hx, hy;
         
-        var highlight = function(tx, ty)
-        {
-            if (hx != null and hy != null)
-            {
+        var highlight = function(tx, ty) {
+            if (hx != null and hy != null) {
                 delPiece("highlight", hx, hy);
                 hx = null;
                 hy = null;
@@ -58,8 +54,7 @@
             addPiece("highlight", hx, hy);
         }
         
-        var moveFunc = function(v)
-        {
+        var moveFunc = function(v) {
             cascade = v;
             var m = activePiece.mouse;
             var f = activePiece.forward;
@@ -71,22 +66,19 @@
         
         thisbox.Move ++= moveFunc;
         
-        var leaveFunc = function(v)
-        {
+        var leaveFunc = function(v) {
             cascade = v;
             highlight(-1, -1);
         }
         
         thisbox.Leave ++= leaveFunc;
         
-        var pieceEnterFunc = function(v)
-        {
+        var pieceEnterFunc = function(v) {
             cascade = v;
             activePiece = trapee;
         }
         
-        var callSetMapPos = function(v)
-        {
+        var callSetMapPos = function(v) {
             var tx = vexi.math.floor($map.x / 48);
             var ty = vexi.math.floor($map.y / 24);
             surface.setMapPos(tx, ty);
@@ -99,8 +91,7 @@
          * creation - so displaying the grid is as a simple as putting
          * to tile.grid.display */
         
-        var hideGrid = function()
-        {
+        var hideGrid = function() {
             var n = $map.numchildren;
             var m = $map[0] ? $map[0].numchildren : 0;
             for (var i=0; n>i; i++)
@@ -108,8 +99,7 @@
                     $map[i][j].grid.display = false;
         }
         
-        var showGrid = function()
-        {
+        var showGrid = function() {
             var n = $map.numchildren;
             var m = $map[0] ? $map[0].numchildren : 0;
             for (var i=0; n>i; i++)
@@ -124,16 +114,12 @@
         .game..invertmouse ++= function(v) { cascade = v; invert = v; };
         
         /** initialises the map, calling callback() on completion */
-        thisbox.init = function(callback)
-        {
-            vexi.thread = function(v)
-            {
-                for (var i=0; 100>i; i++)
-                {
+        thisbox.init = function(callback) {
+            vexi.thread = function(v) {
+                for (var i=0; 100>i; i++) {
                     $map[i] = vexi.box;
                     $map[i].orient = "vertical";
-                    for (var j=0; 100>j; j++)
-                    {
+                    for (var j=0; 100>j; j++) {
                         var t = .twoquarter(vexi.box);
                         t.Enter ++= pieceEnterFunc;
                         t.forward = (i+j)%2 == 0;
@@ -154,12 +140,10 @@
             }
         }
         
-        surface ++= function(v)
-        {
+        surface ++= function(v) {
             cascade = v;
             
-            surface.moveMapTo = function(x, y)
-            {
+            surface.moveMapTo = function(x, y) {
                 var d = $map.distanceto($map[x][y]);
                 var dx = width/2 - d.x;
                 var dy = height/2 - d.y;
@@ -182,20 +166,16 @@
         var vx;
         var vy;
         
-        var drag2Func = function(v)
-        {
-            var m = surface.mouse;
+        var drag2Func = function(v) {
+            var m = surface.frame.mouse;
             var nx;
             var ny;
-            // new_x,y = map_origin_x,y + current_mouse_x,y - mouse_origin_x,y
-            if (!invert)
-            {
+            if (!invert) {
+                // new_x,y = map_origin_x,y + current_mouse_x,y - mouse_origin_x,y
                 nx = ox + m.x - mx;
                 ny = oy + m.y - my;
-            }
-            // new_x,y = map_origin_x,y + mouse_origin_x,y - current_mouse_x,y
-            else
-            {
+            } else {
+                // new_x,y = map_origin_x,y + mouse_origin_x,y - current_mouse_x,y
                 nx = ox + mx - m.x;
                 ny = oy + my - m.y;
             }
@@ -208,33 +188,31 @@
             cascade = v;
         }
         
-        var release2Func = function(v)
-        {
+        var release2Func = function(v) {
             drag2 = false;
             Move ++= moveFunc;
-            surface._Release2 --= callee;
-            surface.delMoveTrap(drag2Func);
+            surface.event._Release2 --= callee;
+            surface.event.delMoveTrap(drag2Func);
             callSetMapPos();
             cascade = v;
         }
         
-        var press2Func = function(v)
-        {
+        var press2Func = function(v) {
             if (drag1) return;
             drag2 = true;
             Move --= moveFunc;
             var s = surface;
             // mouse origin
-            mx = s.mouse.x;
-            my = s.mouse.y;
+            mx = s.frame.mouse.x;
+            my = s.frame.mouse.y;
             // map origin
             ox = $map.x;
             oy = $map.y;
             // x,y limit
             vx = width - $map.width;
             vy = height - $map.height;
-            s._Release2 ++= release2Func;
-            s.addMoveTrap(drag2Func);
+            s.event._Release2 ++= release2Func;
+            s.event.addMoveTrap(drag2Func);
             highlight(-1, -1);
             cascade = v;
         }
@@ -244,8 +222,7 @@
         
         //// Piece Placing ////////////////////////////////////////////
         
-        var press1Func = function(v)
-        {
+        var press1Func = function(v) {
             cascade = v;
             if (drag2) return;
             drag1 = true;
@@ -258,8 +235,7 @@
         
         thisbox.Press1 ++= press1Func;
         
-        var release1Func = function(v)
-        {
+        var release1Func = function(v) {
             cascade = v;
             drag1 = false;
         }
@@ -269,8 +245,7 @@
         
         //// Keyboard Shortcuts ///////////////////////////////////////
         
-        thisbox.KeyPressed ++= function(v)
-        {
+        thisbox.KeyPressed ++= function(v) {
             cascade = v;
             if (v == "A-g" or v == "A-G")
                 .game..showgrid = !.game..showgrid;

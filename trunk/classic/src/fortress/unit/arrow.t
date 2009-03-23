@@ -1,5 +1,5 @@
 <vexi xmlns:ui="vexi://ui" xmlns="fortress.image">
-    <ui:box cursor="hand" width="38" height="38" layout="layer" shrink="true">
+    <ui:box cursor="hand" width="38" height="38" layout="place" shrink="true">
         <ui:box id="arrow" display="false" shrink="true" />
         
         thisbox.full = false;
@@ -7,7 +7,7 @@
         var syncArrow = function(v) {
             cascade = v;
             $arrow.fill = .misc["arrow"+(full?"1":"2")+"_"+face];
-            $arrow.align = static.facealigns[face];
+            align = static.facealigns[face];
         }
         
         thisbox.full ++= syncArrow;

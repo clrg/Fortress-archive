@@ -1,8 +1,8 @@
-<vexi xmlns:ui="vexi://ui" xmlns="vexi.widget"
+<vexi xmlns:ui="vexi://ui" xmlns:lay="vexi.layout" xmlns="vexi.widget"
     xmlns:image="fortress.image" xmlns:unit="fortress.unit">
     <surface />
     <ui:box frameheight="200" framewidth="420">
-        <pad orient="vertical" padding="10" hshrink="true">
+        <lay:pad orient="vertical" padding="10" hshrink="true">
             <ui:box vshrink="true" text="Unit" />
             <option id="units" />
             <ui:box vshrink="true" text="Animation" />
@@ -12,9 +12,10 @@
                 <radio id="x1" text="x1" />
                 <radio id="x2" text="x2" />
                 <radio id="x4" text="x4" />
+                $x4.group = $x2.group = $x1.group;
             </ui:box>
             <ui:box />
-        </pad>
+        </lay:pad>
         <ui:box orient="vertical" hshrink="true">
             <ui:box shrink="true">
                 <unit:arrow id="fnw" face="fnw" />

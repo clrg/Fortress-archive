@@ -3,8 +3,7 @@
         <ui:box id="shadow" textcolor="black" x="1" y="1" shrink="true" />
         <ui:box id="text" textcolor="white" shrink="true" />
         
-        text ++= function(v)
-        {
+        text ++= function(v) {
             $shadow.text = v;
             $text.text = v;
             cascade = "";
