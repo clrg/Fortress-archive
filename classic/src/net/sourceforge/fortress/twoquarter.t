@@ -28,24 +28,24 @@
         sync();
         
         thisbox.addPiece = function(type, top, left, zoffset) {
-            type = type.split('.');
-            var z = static.zindex[type[0]];
+            var t = type.split('.');
+            var z = static.zindex[t[0]];
             if (z == null) throw "tried to add nonregistered type '"+type+"' from "+posx+", "+posy;
-            // static.z*zoffset allows us to place tiles untouchably infronts
+            // static.z*zoffset allows us to place tiles untouchably infront of others
             z += static.z * (zoffset ? zoffset : 0);
             var p;
             var i = 0;
-            while (numchildren > i) {
+            var n = numchildren;
+            while (n > i) {
                 p = thisbox[i];
                 if (p.z == z and p.left == left and p.top == top)
-                    throw "tried to add a duplicate piece '"+type[0]+"("+z+") ' from "+posx+", "+posy;
+                    throw "tried to add a duplicate piece '"+t[0]+"("+z+") ' from "+posx+", "+posy;
                 if (p.z > z) break;
                 i++;
             }
             
             var r = .iso96;
-            for (var i=0; type.length>i; i++)
-                r = r[type[i]];
+            for (var i=0; t.length>i; i++) r = r[t[i]];
             var b = vexi.box;
             b.fill = r;
             b.left = left;

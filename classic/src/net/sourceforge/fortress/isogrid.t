@@ -21,16 +21,16 @@
         
         var addPiece = function(piece, px, py, zoff) {
             if (!$map[px][py]) return;
-            $map[px][py].addPiece(piece, true, true, zoff);
-            $map[px+1][py].addPiece(piece, true, false, zoff);
+            $map[px][py].addPiece(piece, true, true, zoff+1);
+            $map[px+1][py].addPiece(piece, true, false, zoff+1);
             $map[px][py+1].addPiece(piece, false, true, zoff);
             $map[px+1][py+1].addPiece(piece, false, false, zoff);
         }
         
         var delPiece = function(piece, px, py) {
             if (!$map[px][py]) return;
-            $map[px][py].delPiece(piece, true, true, zoff);
-            $map[px+1][py].delPiece(piece, true, false, zoff);
+            $map[px][py].delPiece(piece, true, true, zoff+1);
+            $map[px+1][py].delPiece(piece, true, false, zoff+1);
             $map[px][py+1].delPiece(piece, false, true, zoff);
             $map[px+1][py+1].delPiece(piece, false, false, zoff);
         }
@@ -228,9 +228,13 @@
             drag1 = true;
             if (hx == null or hy == null) return;
             addPiece("squaretower.base", hx, hy);
-            addPiece("squaretower.stem", hx, hy-2, 1);
-            addPiece("squaretower.top1", hx, hy-4, 2);
-            addPiece("squaretower.top2", hx, hy-6, 3);
+            addPiece("squaretower.stem", hx, hy-2, 2);
+            addPiece("squaretower.top1", hx, hy-4, 4);
+            addPiece("squaretower.top2", hx, hy-6, 6);
+            surface.setMapTile(hx, hy, "castle");
+            surface.setMapTile(hx, hy+1, "castle");
+            surface.setMapTile(hx+1, hy, "castle");
+            surface.setMapTile(hx+1, hy+1, "castle");
         }
         
         thisbox.Press1 ++= press1Func;
